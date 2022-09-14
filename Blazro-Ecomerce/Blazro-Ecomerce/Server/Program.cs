@@ -1,3 +1,4 @@
+using Blazro_Ecomerce.Shared.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 
 namespace Blazro_Ecomerce

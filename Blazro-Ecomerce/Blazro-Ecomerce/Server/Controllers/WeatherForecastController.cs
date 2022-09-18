@@ -1,4 +1,5 @@
 using Blazro_Ecomerce.Shared;
+using Blazro_Ecomerce.Shared.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blazro_Ecomerce.Server.Controllers

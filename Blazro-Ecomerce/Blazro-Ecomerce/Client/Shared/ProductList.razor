@@ -1,0 +1,57 @@
+﻿@foreach (var item in Products)
+{
+<div class="row">
+  <div class="col-md-9 col-md-push-3"> <!-- Szersza -->
+      <img src="@item.ImgURL"/>
+  </div>
+  <div class="col-md-3 col-md-pull-9">
+      <p>
+          @item.Description 
+      </p>
+      <h6>@item.Price</h6>
+  </div>
+</div>
+    
+}
+
+
+
+
+
+
+
+
+
+
+@code 
+{
+    private static List<Product> Products = new List<Product>
+    {
+        new Product
+        {
+          Id=1,
+          Title="Title 1",
+          Description="Description 3",
+          ImgURL="https://images.pexels.com/photos/762687/pexels-photo-762687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=100
+        },
+
+         new Product
+        {
+          Id=2,
+          Title="Title 2",
+          Description="Description 3",
+          ImgURL="https://images.pexels.com/photos/768125/pexels-photo-768125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=1200
+        },
+
+         new Product
+        {
+          Id=1,
+          Title="Title 3",
+          Description="Description 3",
+          ImgURL="https://images.pexels.com/photos/2237801/pexels-photo-2237801.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=1300
+        }
+    };
+}

@@ -1,0 +1,88 @@
+﻿
+
+<div class="container-fluid p-5 bg-primary text-white text-center">
+  <h1>My First Bootstrap Page</h1>
+  <p>Resize this responsive page to see the effect!</p> 
+</div>
+  
+  
+<div class="container mt-5">
+    @foreach(var product in Products)
+    {
+        <div class="row">
+        <div class="col-sm-6">
+            <h3>@product.Title</h3>
+            <img src="@product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/>
+            </div>
+        <div class="col-sm-6">
+        <h2>Description</h2>
+        <br>
+        <p>@product.Description</p>
+        <p><b>Price:   </b> @product.Price</p>
+        </div>
+  </div>
+    }
+</div>
+
+
+
+
+
+@code
+{
+    private static List<Product> Products = new List<Product>
+    {
+        new Product
+        {
+          Id=1,
+          Title="Title 1",
+          Description="Description 3 Description 3 Description 3 Description 3 Description 3 ",
+          ImgURL="https://images.pexels.com/photos/762687/pexels-photo-762687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=700
+        },
+
+         new Product
+        {
+          Id=2,
+          Title="Title 2",
+          Description="Description 3",
+          ImgURL="https://images.pexels.com/photos/768125/pexels-photo-768125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=1200
+        },
+
+         new Product
+        {
+          Id=1,
+          Title="Title 3",
+          Description="Description 3",
+          ImgURL="https://images.pexels.com/photos/2237801/pexels-photo-2237801.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=1300
+        },
+         new Product
+        {
+          Id=1,
+          Title="Title 4",
+          Description="Description 4",
+          ImgURL="https://images.pexels.com/photos/762687/pexels-photo-762687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=730
+        },
+
+         new Product
+        {
+          Id=2,
+          Title="Title 5",
+          Description="Description 5",
+          ImgURL="https://images.pexels.com/photos/768125/pexels-photo-768125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=23200
+        },
+
+         new Product
+        {
+          Id=1,
+          Title="Title 6",
+          Description="Description 6",
+          ImgURL="https://images.pexels.com/photos/2237801/pexels-photo-2237801.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          Price=13320
+        }
+    };
+}

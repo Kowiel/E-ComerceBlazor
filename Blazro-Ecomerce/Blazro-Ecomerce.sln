@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazro-Ecomerce.Server", "Blazro-Ecomerce\Server\Blazro-Ecomerce.Server.csproj", "{475943AA-C492-4AC6-B095-E373CF6C5375}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazro-Ecomerce.Server", "Blazro-Ecomerce\Server\Blazro-Ecomerce.Server.csproj", "{475943AA-C492-4AC6-B095-E373CF6C5375}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazro-Ecomerce.Client", "Blazro-Ecomerce\Client\Blazro-Ecomerce.Client.csproj", "{99EF5931-4106-4DC0-8D01-67D7554C884C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazro-Ecomerce.Client", "Blazro-Ecomerce\Client\Blazro-Ecomerce.Client.csproj", "{99EF5931-4106-4DC0-8D01-67D7554C884C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazro-Ecomerce.Shared", "Blazro-Ecomerce\Shared\Blazro-Ecomerce.Shared.csproj", "{2A353391-7CA5-4F18-B930-55C713DB40FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazro-Ecomerce.Shared", "Blazro-Ecomerce\Shared\Blazro-Ecomerce.Shared.csproj", "{2A353391-7CA5-4F18-B930-55C713DB40FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

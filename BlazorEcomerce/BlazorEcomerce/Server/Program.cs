@@ -1,5 +1,8 @@
+using BlazorEcomerce.Server.Data;
 using BlazroEcomerce.Shared.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorEcomerce
 {
@@ -8,18 +11,31 @@ namespace BlazorEcomerce
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            // DB
+
+            builder.Services.AddDbContext<DataContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Db_Ecomerce")));
+
+
 
             // Add services to the container.
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
+
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseWebAssemblyDebugging();
+                app.UseSwagger();
+                app.UseSwaggerUI();
             }
             else
             {
@@ -28,6 +44,8 @@ namespace BlazorEcomerce
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseHttpsRedirection();
 
             app.UseBlazorFrameworkFiles();

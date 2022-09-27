@@ -1,5 +1,5 @@
 ﻿@using BlazorEcomerce.Shared.Services
-@inject HttpClient Http;
+@inject IProductService _ProductService;
 
 <div class="container-fluid p-5 text-white text-center Baner">
   <h1>My First Bootstrap Page</h1>
@@ -7,13 +7,20 @@
 </div>
   
   
+@if(_ProductService.Products==null || _ProductService.Products.Count==0)
+{
+    <div class="loader"> </div>
+}
+else
+{
 <div class="container mt-5 ">
-    @foreach(var product in Products)
+    @foreach(var product in _ProductService.Products)
     {
+       
         <div class="row">
         <div class="col-sm-6">
             <h3>@product.Title</h3>
-            <img src="@product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/>
+             <a href="/product/@product.Id"><img src="@product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/></a>
             </div>
         <div class="col-sm-6">
         <h2>Description</h2>
@@ -21,23 +28,22 @@
         <p>@product.Description</p>
         <p><b>Price:   </b> @product.Price</p>
         </div>
-  </div>
+        </div>
+       
     }
 </div>
-
+}
 
 
 
 
 @code
 {
-    private static List<Product> Products = new List<Product>();
-
+   
     protected override async Task OnInitializedAsync()
     {
-        var result = await Http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/products/getall");
-        if (result != null && result.Value!=null)
-            Products = result.Value;
+       
+        await _ProductService.GetAllProducts();
     }
 
 }

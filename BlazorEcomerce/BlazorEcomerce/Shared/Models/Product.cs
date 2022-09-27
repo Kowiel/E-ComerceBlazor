@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlazorEcomerce.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace BlazroEcomerce.Shared.Models
         public string ImgURL { get; set; } = String.Empty;
         [Column(TypeName="decimal(18,2)")]
         public decimal Price { get; set; }
+        public Category? category { get; set; }  
+        public int CategoryId { get; set; }   
 
     }
 

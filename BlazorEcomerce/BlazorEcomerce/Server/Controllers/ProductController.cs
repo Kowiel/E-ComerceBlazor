@@ -4,6 +4,7 @@ using BlazroEcomerce.Shared.Models;
 using BlazorEcomerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using BlazorEcomerce.Shared.Services;
+using BlazorEcomerce.Server.IServices;
 
 namespace BlazorEcomerce.Server.Controllers
 {
@@ -12,22 +13,25 @@ namespace BlazorEcomerce.Server.Controllers
     [Route("api/products")]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _context;
+        private readonly IProductService _productservice;
 
-        public ProductController(DataContext context)
+        public ProductController(IProductService productservice)
         {
-            _context = context;
+           _productservice = productservice;
         }
 
         [HttpGet("getall/", Name = "GetProduct")]
         public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProduct()
         {
-            var Products = await _context.Products.ToListAsync();
-            var response=new ServiceResponse<List<Product>>()
-            {
-                Value = Products
-            };
+            var response = await _productservice.GetAllProducts();
             return Ok(response); 
+        }
+
+        [HttpGet("getone/{id}", Name = "GetOneProduct")]
+        public async Task<ActionResult<ServiceResponse<Product>>> GetProductByID(int id)
+        {
+            var response = await _productservice.GetProductByID(id);
+            return Ok(response);
         }
     }
 }

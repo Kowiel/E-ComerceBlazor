@@ -1,4 +1,6 @@
 using BlazorEcomerce.Server.Data;
+using BlazorEcomerce.Server.IServices;
+using BlazorEcomerce.Server.Services;
 using BlazroEcomerce.Shared.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
@@ -25,8 +27,17 @@ namespace BlazorEcomerce
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            //Add our Services
+            // https://i.stack.imgur.com/M0le5.jpg
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+
+
+
+            //Build APP!!
             var app = builder.Build();
+            
 
 
 

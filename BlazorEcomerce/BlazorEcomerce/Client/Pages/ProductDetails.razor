@@ -1,0 +1,54 @@
+﻿@page "/product/{id:int}"
+@inject IProductService _ProductService
+
+@if(Product==null)
+{
+    <div class="loader"> </div>
+     <h1>@message</h1>
+
+}
+else
+{
+    <div class="container-fluid p-5 text-white text-center Baner">
+        <h1>@Product.Title</h1>
+    </div>
+    <div class="container mt-5 ">
+        <div class="row">
+        <div class="col-sm-6">
+            <img src="@Product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/>
+        </div>
+        <div class="col-sm-6">
+        <p>@Product.Description</p>
+        </div>
+  </div>
+  <p><b>Price:   </b>@Product.Price</p>
+</div>
+<a href="/">BaCK</a>
+
+  
+}
+
+
+
+@code 
+{
+    private Product? Product = null;
+    private string message="";
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        message = "Loadaing";
+        var result = await _ProductService.GetProduct(Id);
+        if(result.Success==true)
+        {
+            Product = result.Value;
+        }
+        else
+        {
+            message = "Nie ma takiego produktu";
+        }
+    }
+}

@@ -3,6 +3,7 @@ using BlazorEcomerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorEcomerce.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220927184454_AdingCategory2")]
+    partial class AdingCategory2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,13 +66,7 @@ namespace BlazorEcomerce.Server.Migrations
                         {
                             Id = 4,
                             Name = "CC",
-                            URL = "Christina_Carter"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "CD",
-                            URL = "claire_dames"
+                            URL = "Christina Carter"
                         });
                 });
 
@@ -166,18 +162,9 @@ namespace BlazorEcomerce.Server.Migrations
                             Id = 7,
                             CategoryId = 4,
                             Description = "A great Fucking pornstar",
-                            ImgURL = "https://porn.tattoo/pics/legaction/christina-carter/completely-free-milf-vr/christina-carter-3.jpg",
+                            ImgURL = "http://xxxnightrelax.com/image/867115.jpg",
                             Price = 100000000000m,
                             Title = "Christina Carter"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            CategoryId = 5,
-                            Description = "A decent Fucking pornstar",
-                            ImgURL = "https://external-preview.redd.it/Ti6KimBa2vh2sqPnjwPpou6S_3F440TSO8UNeFXEt1I.jpg?auto=webp&s=4653334b5fc6f001e19a5b4a556be9b103d421a1",
-                            Price = 1000000000m,
-                            Title = "Claire Dames"
                         });
                 });
 

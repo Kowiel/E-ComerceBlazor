@@ -4,13 +4,11 @@
 }
 
 
-.Baner p
-{
-    padding: 15px;
-}
+    .Baner p {
+        padding: 15px;
+    }
 
-@media(max-width: 600px)
-{
+@media(max-width: 600px) {
     .Baner {
         background-color: dimgrey;
         font-size: 1rem;
@@ -21,13 +19,14 @@
         }
 }
 
+
 .loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
     border-top: 16px solid #3498db;
     width: 120px;
     height: 120px;
-    -webkit-animation: spin 2s linear infinite; 
+    -webkit-animation: spin 2s linear infinite;
     animation: spin 2s linear infinite;
 }
 
@@ -51,24 +50,3 @@
         transform: rotate(360deg);
     }
 }
-
-a:link {
-    text-decoration: none;
-}
-
-a:visited {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-a:active {
-    text-decoration: underline;
-}
-
-a {
-    color: black;
-}
-

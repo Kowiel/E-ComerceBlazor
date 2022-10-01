@@ -1,5 +1,6 @@
 ﻿@using BlazorEcomerce.Shared.Services
 @inject IProductService _ProductService;
+@implements IDisposable 
 
 <div class="container-fluid p-5 text-white text-center Baner">
   <h1>My First Bootstrap Page</h1>
@@ -39,11 +40,14 @@ else
 
 @code
 {
-   
-    protected override async Task OnInitializedAsync()
+
+    protected override void OnInitialized()
     {
-       
-        await _ProductService.GetAllProducts();
+        _ProductService.ProductChanged += StateHasChanged;
+    }
+    public void Dispose()
+    {
+         _ProductService.ProductChanged -= StateHasChanged;
     }
 
 }

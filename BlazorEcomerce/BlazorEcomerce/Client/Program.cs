@@ -1,6 +1,6 @@
 using BlazorEcomerce.Client;
-using BlazorEcomerce.Client.IServices;
-using BlazorEcomerce.Client.Services;
+using BlazorEcomerce.Client.IService;
+using BlazorEcomerce.Client.Service;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -16,8 +16,9 @@ namespace BlazorEcomerce.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-            //Add castom services
+            //Add custom services
             builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             await builder.Build().RunAsync();
         }

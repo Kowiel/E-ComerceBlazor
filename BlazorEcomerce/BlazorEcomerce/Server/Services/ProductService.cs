@@ -23,6 +23,15 @@ namespace BlazorEcomerce.Server.Services
             return response;
         }
 
+        public async Task<ServiceResponse<List<Product>>> GetProductByCategory(string CategoryUrl)
+        {
+            var response = new ServiceResponse<List<Product>>()
+            {
+                Value = await _context.Products.Where(x => x.category.URL.ToLower().Equals(CategoryUrl)).ToListAsync()
+            };
+            return response;
+        }
+
         public async Task<ServiceResponse<Product>> GetProductByID(int Id)
         {
             var response = new ServiceResponse<Product>();

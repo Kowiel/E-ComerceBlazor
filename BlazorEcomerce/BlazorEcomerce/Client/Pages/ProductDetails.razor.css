@@ -1,8 +1,18 @@
 ﻿.Baner {
-    background-color: #6f42c1;
+    background-color: black;
     font-size: 2rem;
 }
 
+.oldPrice {
+    text-decoration: line-through;
+    color: red;
+}
+
+.newPrice
+{
+    color: forestgreen;
+    font-weight:bold;
+}
 
     .Baner p {
         padding: 15px;

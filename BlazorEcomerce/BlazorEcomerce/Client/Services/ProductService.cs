@@ -15,6 +15,7 @@ namespace BlazorEcomerce.Client.Service
             _http = http;
         }
         public List<Product> Products { get; set; } = new List<Product>();
+        public string message { get; set; } = "Loading Products ....";
 
         public event Action ProductChanged;
 
@@ -34,6 +35,22 @@ namespace BlazorEcomerce.Client.Service
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<Product>>($"api/products/getone/{Id}");
             return result;
+        }
+
+        public async Task<List<string>> GetProductSercheSugestion(string searhText)
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<string>>>($"api/products/getsugestionserchtext/{searhText}");
+            return result.Value;
+        }
+
+        public async Task SerchProducts(string searhText)
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/products/getbyserchtext/{searhText}");
+            if (result != null && result.Value != null)
+                Products = result.Value;
+            if (Products.Count == 0)
+                message = "No products";
+            ProductChanged?.Invoke();
         }
     }
 }

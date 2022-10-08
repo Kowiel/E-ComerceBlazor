@@ -2,15 +2,17 @@
 @inject IProductService _ProductService;
 @implements IDisposable 
 
-<div class="container-fluid p-5 text-white text-center Baner">
-  <h1>My First Bootstrap Page</h1>
-  <p>Resize this responsive page to see the effect!</p> 
+<div class="container-fluid p text-white text-center Baner">
+  <form class="example">
+     <input type="text" placeholder="Search.." name="search">
+     <input class="btn btn-primary" type="submit" value="Submit">
+</form>
 </div>
   
   
 @if(_ProductService.Products==null || _ProductService.Products.Count==0)
 {
-    <div class="loader"> </div>
+    <div class="loader"> @_ProductService.message </div>
 }
 else
 {
@@ -27,7 +29,7 @@ else
         <h2>Description</h2>
         <br>
         <p>@product.Description</p>
-        <p><b>Price:   </b> @*@product.Price*@</p>
+        <p><b>Price:   </b> @GetPriceText(product)</p>
         </div>
         </div>
        
@@ -47,7 +49,19 @@ else
     }
     public void Dispose()
     {
-         _ProductService.ProductChanged -= StateHasChanged;
+        _ProductService.ProductChanged -= StateHasChanged;
     }
 
+    private string GetPriceText(Product product)
+    {
+        var variants = product.Variants;
+        if (variants.Count == 0)
+            return string.Empty;
+        if(variants.Count==1)
+            return $"{variants[0].Price}";
+        decimal min = variants.Min(p => p.Price);
+        decimal max = variants.Max(p => p.Price);
+        return $"Starting at: {min} to {max}";
+
+    }
 }

@@ -1,4 +1,5 @@
 ﻿@page "/product/{id:int}"
+@using BlazorEcomerce.Shared.Models
 @inject IProductService _ProductService
 
 @if(Product==null)
@@ -13,15 +14,36 @@ else
         <h1>@Product.Title</h1>
     </div>
     <div class="container mt-5 ">
+                @if(Product.Variants.Count>1)
+            {
+                <div class="col-sm-6">
+                    <select class="form-select-lg" @bind="CurentTypeId">
+                        @foreach(var variant in Product.Variants)
+                        {
+                            <option value=@variant.ProductTypeId>@variant.ProductType.Name</option>
+                        }
+                    </select>
+                </div>
+            }
+    </div>
+    <div class="container mt-5 ">
         <div class="row">
         <div class="col-sm-6">
             <img src="@Product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/>
         </div>
         <div class="col-sm-6">
         <p>@Product.Description</p>
-        </div>
+        </div> 
+            @if(GetSelectedVariant()!=null)
+            {
+                if(GetSelectedVariant().OriginalPrice>GetSelectedVariant().Price)
+                {
+                     <p class="oldPrice"><b>Old PRice:   </b>$@GetSelectedVariant().OriginalPrice</p>
+                }
+        <p class="newPrice"><b>Price:   </b>$@GetSelectedVariant().Price</p>
+            }    
   </div>
-  <p><b>Price:   </b>@*@Product.Price*@</p>
+  
 </div>
 <a href="/">BaCK</a>
 
@@ -34,6 +56,7 @@ else
 {
     private Product? Product = null;
     private string message="";
+    private int CurentTypeId = 1;
 
     [Parameter]
     public int Id { get; set; }
@@ -42,13 +65,23 @@ else
     {
         message = "Loadaing";
         var result = await _ProductService.GetProduct(Id);
-        if(result.Success==true)
+        if(!result.Success)
         {
-            Product = result.Value;
+           message = "No such Product";
         }
         else
         {
-            message = "Nie ma takiego produktu";
+            Product = result.Value;
+            if(Product.Variants.Count>0)
+            {
+                CurentTypeId = Product.Variants[0].ProductTypeId; 
+            }
         }
+    }
+
+    private ProductVariant GetSelectedVariant()
+    {
+            var variant = Product.Variants.FirstOrDefault(v => v.ProductTypeId == CurentTypeId);
+            return variant;
     }
 }

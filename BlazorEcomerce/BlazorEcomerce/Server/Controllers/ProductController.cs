@@ -40,5 +40,18 @@ namespace BlazorEcomerce.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("getbyserchtext/{serchtext}", Name = "GetProductsBySerchtext")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsBySerchtext(string serchtext)
+        {
+            var response = await _productservice.SearchForProducts(serchtext);
+            return Ok(response);
+        }
+
+        [HttpGet("getsugestionserchtext/{serchtext}", Name = "GetSugestionBySerchtext")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetSugestionBySerchtext(string serchtext)
+        {
+            var response = await _productservice.SearchForSugestions(serchtext);
+            return Ok(response);
+        }
     }
 }

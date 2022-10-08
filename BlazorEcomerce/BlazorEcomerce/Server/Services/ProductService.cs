@@ -54,5 +54,60 @@ namespace BlazorEcomerce.Server.Services
             }
             return response;
         }
+
+        public async Task<ServiceResponse<List<Product>>> SearchForProducts(string SearchText)
+        {
+            string Text = SearchText.ToLower();
+            var response = new ServiceResponse<List<Product>>()
+            {
+                Value = await FindProductsByText(Text)
+
+            };
+
+            return response;
+        }
+
+
+        public async Task<ServiceResponse<List<string>>> SearchForSugestions(string Text)
+        {
+            var products = await FindProductsByText(Text);
+            List<string> Sugestions = new List<string>();
+
+            foreach (var item in products)
+            {
+                if(item.Title.Contains(Text,StringComparison.OrdinalIgnoreCase))
+                {
+                    Sugestions.Add(item.Title);
+                }
+                if (item.Description!=null)
+                {
+                    var punctiation = item.Description.Where(char.IsPunctuation).Distinct().ToArray();
+                    var words =item.Description.Split().Select(s => s.Trim(punctiation));
+
+                    foreach(var word in words)
+                    {
+                        if(word.Contains(Text,StringComparison.OrdinalIgnoreCase) && !Sugestions.Contains(word))
+                        {
+                            Sugestions.Add(word);
+                        }
+                    }
+                }
+            }
+
+            return new ServiceResponse<List<string>> { Value = Sugestions };
+
+        }
+
+        //Methods not found un IServices
+        private async Task<List<Product>> FindProductsByText(string Text)
+        {
+            return await _context.Products
+                            .Where(x => x.Description.ToLower().Contains(Text) ||
+                                x.Title.ToLower().Contains(Text))
+                             .Include(p => p.Variants)
+                            .ThenInclude(v => v.ProductType)
+                            .ToListAsync();
+        }
+
     }
 }

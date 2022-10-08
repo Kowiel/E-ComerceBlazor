@@ -11,5 +11,13 @@ namespace BlazorEcomerce.Client.IService
         Task<ServiceResponse<Product>> GetProduct(int Id);
 
         event Action ProductChanged;
+
+        string message { get; set; }
+
+        Task SerchProducts(string searhText);
+        Task<List<string>> GetProductSercheSugestion(string searhText);
+
+
+
     }
 }

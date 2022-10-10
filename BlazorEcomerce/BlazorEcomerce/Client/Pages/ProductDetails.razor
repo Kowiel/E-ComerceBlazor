@@ -1,12 +1,12 @@
 ﻿@page "/product/{id:int}"
 @using BlazorEcomerce.Shared.Models
 @inject IProductService _ProductService
+@layout MainPageLayoutWithoutNav
 
 @if(Product==null)
 {
     <div class="loader"> </div>
      <h1>@message</h1>
-
 }
 else
 {

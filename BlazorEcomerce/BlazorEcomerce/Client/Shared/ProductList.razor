@@ -2,14 +2,7 @@
 @inject IProductService _ProductService;
 @implements IDisposable 
 
-<div class="container-fluid p text-white text-center Baner">
-  <form class="example">
-     <input type="text" placeholder="Search.." name="search">
-     <input class="btn btn-primary" type="submit" value="Submit">
-</form>
-</div>
-  
-  
+
 @if(_ProductService.Products==null || _ProductService.Products.Count==0)
 {
     <div class="loader"> @_ProductService.message </div>

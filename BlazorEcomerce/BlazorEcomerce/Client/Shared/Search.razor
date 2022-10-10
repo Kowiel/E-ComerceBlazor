@@ -1,0 +1,59 @@
+﻿@using BlazorEcomerce.Shared.Services
+@inject NavigationManager _navmenager;
+@inject IProductService _ProductService;
+
+<div class="input-group">
+    <input @bind-value = "SearchText"
+           @bind-value:event="oninput"
+           type="search"
+           list="products"
+           @onkeyup="HandleSearh"
+           class="form-control"
+           placeholder="Search..."
+           @ref="SearchImput"/>
+    <datalist id="products">
+        @foreach (var item in Sugestions)
+       {
+           <option>@item</option>
+       }
+    </datalist>
+    <div class="input-group-append">
+        <button class="btn btn-primary" @onclick="SearchProducts">
+            <span class="oi oi-magnifying-glass"></span>
+        </button>
+    </div>
+</div>
+
+@code 
+{
+    private string SearchText = string.Empty;
+    private List<string> Sugestions = new List<string>();
+    protected ElementReference SearchImput;
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        if(firstRender)
+        {
+            await SearchImput.FocusAsync();
+        }
+    }
+    public void SearchProducts()
+    {
+        if (SearchText.Length < 2)
+            _navmenager.NavigateTo("/");
+        else
+        _navmenager.NavigateTo($"serch/{SearchText}");
+    }
+
+    public async Task HandleSearh(KeyboardEventArgs arg)
+        {
+            if(arg.Key==null || arg.Key.Equals("Enter"))
+            {
+                SearchProducts();
+            }
+            else if(SearchText.Length>2)
+            {
+                Sugestions = await _ProductService.GetProductSercheSugestion(SearchText);
+            }
+        }
+}

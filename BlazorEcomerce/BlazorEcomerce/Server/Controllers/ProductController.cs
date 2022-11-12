@@ -5,6 +5,7 @@ using BlazorEcomerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using BlazorEcomerce.Shared.Services;
 using BlazorEcomerce.Server.IServices;
+using BlazorEcomerce.Shared.DTOs;
 
 namespace BlazorEcomerce.Server.Controllers
 {
@@ -27,6 +28,13 @@ namespace BlazorEcomerce.Server.Controllers
             return Ok(response); 
         }
 
+        [HttpGet("getallfeatured/", Name = "GetFeaturedProduct")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetFeaturedProduct()
+        {
+            var response = await _productservice.GetAllFeturedProducts();
+            return Ok(response);
+        }
+
         [HttpGet("getone/{id}", Name = "GetOneProduct")]
         public async Task<ActionResult<ServiceResponse<Product>>> GetProductByID(int id)
         {
@@ -40,10 +48,10 @@ namespace BlazorEcomerce.Server.Controllers
             return Ok(response);
         }
 
-        [HttpGet("getbyserchtext/{serchtext}", Name = "GetProductsBySerchtext")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductsBySerchtext(string serchtext)
+        [HttpGet("getbyserchtext/{serchtext}/{CountOnPage}/{page}", Name = "GetProductsBySerchtext")]
+        public async Task<ActionResult<ServiceResponse<ProductSearchResultDTO>>> GetProductsBySerchtext(string serchtext,int page=1,int CountOnPage=3)
         {
-            var response = await _productservice.SearchForProducts(serchtext);
+            var response = await _productservice.SearchForProducts(serchtext,page,CountOnPage);
             return Ok(response);
         }
 

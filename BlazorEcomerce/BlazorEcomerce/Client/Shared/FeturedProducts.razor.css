@@ -1,0 +1,43 @@
+﻿.container {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    justify-content: center;
+}
+
+img {
+    max-width: 180px;
+    max-height: 200px;
+    border-radius: 6px;
+    transition: transform .2s;
+    margin-bottom: 10px;
+}
+
+    img:hover {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+.featured-product {
+    margin: 0.40rem;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    max-width: 200px;
+}
+
+a {
+    text-decoration: none;
+    font-weight:bold;
+    color:rebeccapurple;
+}
+
+.center{
+    margin-top:auto;
+    margin-bottom:auto;
+}
+@media (max-width: 1023.98px) {
+    .container {
+        justify-content: flex-start;
+    }
+}

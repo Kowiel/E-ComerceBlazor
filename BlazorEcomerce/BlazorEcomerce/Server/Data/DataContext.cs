@@ -73,6 +73,7 @@ namespace BlazorEcomerce.Server.Data
                      Description = "Description 3 Description 3 Description 3 Description 3 Description 3 ",
                      ImgURL = "https://images.pexels.com/photos/762687/pexels-photo-762687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
                      CategoryId = 1,
+                     Featured=true
                  },
 
          new Product
@@ -125,6 +126,7 @@ namespace BlazorEcomerce.Server.Data
                Description = "A great Fucking pornstar",
                ImgURL = "https://porn.tattoo/pics/legaction/christina-carter/completely-free-milf-vr/christina-carter-3.jpg",
                CategoryId = 4,
+               Featured=true
            },
            new Product
            {
@@ -133,6 +135,7 @@ namespace BlazorEcomerce.Server.Data
                Description = "A decent Fucking pornstar",
                ImgURL = "https://external-preview.redd.it/Ti6KimBa2vh2sqPnjwPpou6S_3F440TSO8UNeFXEt1I.jpg?auto=webp&s=4653334b5fc6f001e19a5b4a556be9b103d421a1",
                CategoryId = 5,
+               Featured =true
            },
            new Product
            {

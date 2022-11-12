@@ -1,5 +1,6 @@
 ﻿using BlazorEcomerce.Server.Data;
 using BlazorEcomerce.Server.IServices;
+using BlazorEcomerce.Shared.DTOs;
 using BlazorEcomerce.Shared.Services;
 using BlazroEcomerce.Shared.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,16 @@ namespace BlazorEcomerce.Server.Services
         {
             _context = context;
         }
+
+        public async Task<ServiceResponse<List<Product>>> GetAllFeturedProducts()
+        {
+            var response = new ServiceResponse<List<Product>>()
+            {
+                Value = await _context.Products.Where(x=>x.Featured==true).Include(p => p.Variants).ToListAsync()
+            };
+            return response;
+        }
+
         public async Task<ServiceResponse<List<Product>>> GetAllProducts()
         {
             var response = new ServiceResponse<List<Product>>()
@@ -55,18 +66,32 @@ namespace BlazorEcomerce.Server.Services
             return response;
         }
 
-        public async Task<ServiceResponse<List<Product>>> SearchForProducts(string SearchText)
+        public async Task<ServiceResponse<ProductSearchResultDTO>> SearchForProducts(string SearchText , int PageNumber, int PageResults)
         {
+            float pageResult = PageResults;
             string Text = SearchText.ToLower();
-            var response = new ServiceResponse<List<Product>>()
+            double pageCount = Math.Ceiling((await FindProductsByText(Text)).Count / pageResult);
+            var Products = await _context.Products
+                            .Where(x => x.Description.ToLower().Contains(Text) ||
+                                x.Title.ToLower().Contains(Text))
+                             .Include(p => p.Variants)
+                             .Skip((PageNumber - 1) * (int)pageResult)
+                             .Take((int)pageResult)
+                             .ToListAsync();
+
+            var response = new ServiceResponse<ProductSearchResultDTO>
             {
-                Value = await FindProductsByText(Text)
+                Value = new ProductSearchResultDTO
+                {
+                    Products = Products,
+                    CurentPage = PageNumber,
+                    Pages = (int)pageCount
+                }
 
             };
 
             return response;
         }
-
 
         public async Task<ServiceResponse<List<string>>> SearchForSugestions(string Text)
         {

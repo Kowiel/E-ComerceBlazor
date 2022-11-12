@@ -1,8 +1,10 @@
 ﻿@using BlazorEcomerce.Shared.Services
 @inject NavigationManager _navmenager;
 @inject IProductService _ProductService;
+@inject ICategoryService _CategoryService;
 
-<div class="input-group">
+<div class="input-group-text">
+    <HomeButon/>
     <input @bind-value = "SearchText"
            @bind-value:event="oninput"
            type="search"
@@ -17,6 +19,14 @@
            <option>@item</option>
        }
     </datalist>
+    <input list="Categories" id="Categories-list" name="Categories-Selection" class="ComboBox">
+<datalist id="Categories">
+    <option>All</option>
+     @foreach (var Categorie in  _CategoryService.Categories)
+       {
+           <option>@Categorie.Name</option>
+       }
+</datalist>
     <div class="input-group-append">
         <button class="btn btn-primary" @onclick="SearchProducts">
             <span class="oi oi-magnifying-glass"></span>
@@ -27,6 +37,7 @@
 @code 
 {
     private string SearchText = string.Empty;
+    private int ProductsPerPage = 3;
     private List<string> Sugestions = new List<string>();
     protected ElementReference SearchImput;
 
@@ -42,7 +53,7 @@
         if (SearchText.Length < 2)
             _navmenager.NavigateTo("/");
         else
-        _navmenager.NavigateTo($"serch/{SearchText}");
+        _navmenager.NavigateTo($"search/{SearchText}/{ProductsPerPage}/1");
     }
 
     public async Task HandleSearh(KeyboardEventArgs arg)

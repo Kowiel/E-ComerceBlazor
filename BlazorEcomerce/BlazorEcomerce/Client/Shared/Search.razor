@@ -2,6 +2,8 @@
 @inject NavigationManager _navmenager;
 @inject IProductService _ProductService;
 @inject ICategoryService _CategoryService;
+@implements IDisposable 
+
 
 <div class="input-group-text">
     <HomeButon/>
@@ -19,14 +21,14 @@
            <option>@item</option>
        }
     </datalist>
-    <input list="Categories" id="Categories-list" name="Categories-Selection" class="ComboBox">
-<datalist id="Categories">
-    <option>All</option>
-     @foreach (var Categorie in  _CategoryService.Categories)
+<select @bind-value= "Category"  @bind-value:event="oninput" @ref="CategoryInput" list="Categories" class="ComboBox">
+     <option value="All">All</option>
+    @foreach (var Categorie in  _CategoryService.Categories)
        {
-           <option>@Categorie.Name</option>
+           <option value="@Categorie.Name" >@Categorie.Name</option>
        }
-</datalist>
+    
+</select>
     <div class="input-group-append">
         <button class="btn btn-primary" @onclick="SearchProducts">
             <span class="oi oi-magnifying-glass"></span>
@@ -37,9 +39,11 @@
 @code 
 {
     private string SearchText = string.Empty;
+    private string Category;
     private int ProductsPerPage = 3;
     private List<string> Sugestions = new List<string>();
     protected ElementReference SearchImput;
+    protected ElementReference CategoryInput;
 
     protected override async void OnAfterRender(bool firstRender)
     {
@@ -48,23 +52,31 @@
             await SearchImput.FocusAsync();
         }
     }
+    protected override void OnInitialized()
+    {
+        _CategoryService.CategorysLoaded += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        _CategoryService.CategorysLoaded -= StateHasChanged;
+    }
+
     public void SearchProducts()
     {
-        if (SearchText.Length < 2)
-            _navmenager.NavigateTo("/");
-        else
-        _navmenager.NavigateTo($"search/{SearchText}/{ProductsPerPage}/1");
+        _navmenager.NavigateTo($"search/{SearchText}/{Category}/{ProductsPerPage}/1");
     }
 
     public async Task HandleSearh(KeyboardEventArgs arg)
+    {
+        if(arg.Key==null || arg.Key.Equals("Enter"))
         {
-            if(arg.Key==null || arg.Key.Equals("Enter"))
-            {
-                SearchProducts();
-            }
-            else if(SearchText.Length>2)
-            {
-                Sugestions = await _ProductService.GetProductSercheSugestion(SearchText);
+            SearchProducts();
+        }
+        else if(SearchText.Length>1)
+        {
+            if (Category == null)
+                Category = "All";
+            Sugestions = await _ProductService.GetProductSercheSugestion(SearchText,Category);
             }
         }
 }

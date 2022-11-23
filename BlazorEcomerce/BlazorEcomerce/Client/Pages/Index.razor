@@ -1,10 +1,15 @@
 ﻿@inject IProductService _ProductService
-@page "/"
-@page "/search/{searchText}/{productsonpage:int}/{page:int}"
-@page "/{categoryURL}"
+@inject ICategoryService _CategoryService
 
-<PageTitle>Urban Shop</PageTitle>
-@if(CategoryURL==null && searchText==null)
+@page "/"
+@page "/search/{searchText}/{category}/{productsonpage:int}/{page:int}"
+@page "/{category}"
+
+
+
+
+    <PageTitle>Urban Shop</PageTitle>
+@if(category==null && searchText==null)
 {
     <FeturedProducts/>
 }
@@ -16,11 +21,12 @@ else
 
 @code
 {
-    [Parameter]
-    public string CategoryURL { get; set; } = null;
 
     [Parameter]
     public string searchText { get; set; } = null;
+
+     [Parameter]
+    public string category { get; set; } = null;
 
     [Parameter]
     public int productsonpage { get; set; } = 3;
@@ -28,15 +34,21 @@ else
     [Parameter]
     public int page { get; set; } = 1;
 
+     protected override async Task OnInitializedAsync()
+    {
+         await _CategoryService.GetAllCategories();
+    }
+
     protected override async Task OnParametersSetAsync()
     {
         if(searchText!=null)
         {
-            await _ProductService.SerchProducts(searchText,productsonpage,page);
+            await _ProductService.SerchProducts(searchText,category,productsonpage,page);
         }
         else
         {
-             await _ProductService.GetAllProducts(CategoryURL);
+             await _ProductService.GetAllProducts(category);
         }
     }
+
 }

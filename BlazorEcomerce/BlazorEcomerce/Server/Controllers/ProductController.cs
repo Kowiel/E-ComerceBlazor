@@ -48,17 +48,17 @@ namespace BlazorEcomerce.Server.Controllers
             return Ok(response);
         }
 
-        [HttpGet("getbyserchtext/{serchtext}/{CountOnPage}/{page}", Name = "GetProductsBySerchtext")]
-        public async Task<ActionResult<ServiceResponse<ProductSearchResultDTO>>> GetProductsBySerchtext(string serchtext,int page=1,int CountOnPage=3)
+        [HttpGet("getbyserchtext/{serchtext}/{category}/{CountOnPage}/{page}", Name = "GetProductsBySerchtext")]
+        public async Task<ActionResult<ServiceResponse<ProductSearchResultDTO>>> GetProductsBySerchtext(string serchtext, string Category, int page=1,int CountOnPage=3)
         {
-            var response = await _productservice.SearchForProducts(serchtext,page,CountOnPage);
+            var response = await _productservice.SearchForProducts(serchtext,page,CountOnPage, Category);
             return Ok(response);
         }
 
-        [HttpGet("getsugestionserchtext/{serchtext}", Name = "GetSugestionBySerchtext")]
-        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetSugestionBySerchtext(string serchtext)
+        [HttpGet("getsugestionserchtext/{category}/{serchtext}", Name = "GetSugestionBySerchtext")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetSugestionBySerchtext(string serchtext,string Category)
         {
-            var response = await _productservice.SearchForSugestions(serchtext);
+            var response = await _productservice.SearchForSugestions(serchtext, Category);
             return Ok(response);
         }
     }

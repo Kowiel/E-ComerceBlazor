@@ -16,11 +16,16 @@ namespace BlazorEcomerce.Client.Service
 
         public List<Category> Categories { get; set; } = new List<Category>();
 
+        public event Action CategorysLoaded;
+
         public async Task GetAllCategories()
         {
-            var response = await _http.GetFromJsonAsync<ServiceResponse<List<Category>>>("api/categorys/getcategorys");
+            var response =  await _http.GetFromJsonAsync<ServiceResponse<List<Category>>>("api/categorys/getcategorys");
             if (response != null && response.Value != null)
+            {
                 Categories = response.Value;
+            }
+            CategorysLoaded?.Invoke();
         }
     }
 }

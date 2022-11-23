@@ -66,54 +66,87 @@ namespace BlazorEcomerce.Server.Services
             return response;
         }
 
-        public async Task<ServiceResponse<ProductSearchResultDTO>> SearchForProducts(string SearchText , int PageNumber, int PageResults)
+        public async Task<ServiceResponse<ProductSearchResultDTO>> SearchForProducts(string SearchText , int PageNumber, int PageResults, string Category)
         {
-            float pageResult = PageResults;
-            string Text = SearchText.ToLower();
-            double pageCount = Math.Ceiling((await FindProductsByText(Text)).Count / pageResult);
-            var Products = await _context.Products
-                            .Where(x => x.Description.ToLower().Contains(Text) ||
-                                x.Title.ToLower().Contains(Text))
-                             .Include(p => p.Variants)
-                             .Skip((PageNumber - 1) * (int)pageResult)
-                             .Take((int)pageResult)
-                             .ToListAsync();
-
-            var response = new ServiceResponse<ProductSearchResultDTO>
+            if (Category == "All")
             {
-                Value = new ProductSearchResultDTO
+                float pageResult = PageResults;
+                string Text = SearchText.ToLower();
+                double pageCount = Math.Ceiling((await FindProductsByText(Text, Category)).Count / pageResult);
+                var Products = await _context.Products
+                                .Where(x => x.Description.ToLower().Contains(Text) ||
+                                    x.Title.ToLower().Contains(Text))
+                                 .Include(p => p.Variants)
+                                 .Skip((PageNumber - 1) * (int)pageResult)
+                                 .Take((int)pageResult)
+                                 .ToListAsync();
+
+                var response = new ServiceResponse<ProductSearchResultDTO>
                 {
-                    Products = Products,
-                    CurentPage = PageNumber,
-                    Pages = (int)pageCount
-                }
+                    Value = new ProductSearchResultDTO
+                    {
+                        Products = Products,
+                        CurentPage = PageNumber,
+                        Pages = (int)pageCount
+                    }
 
-            };
+                };
+                return response;
+            }
+            else
+            {
+                float pageResult = PageResults;
+                string Text = SearchText.ToLower();
+                double pageCount = Math.Ceiling((await FindProductsByText(Text,Category)).Count / pageResult);
+                var Products = await _context.Products
+                                .Where(x => x.Description.ToLower().Contains(Text) && x.category.Name == Category ||
+                                    x.Title.ToLower().Contains(Text) && x.category.Name == Category)
+                                 .Include(p => p.Variants)
+                                 .Skip((PageNumber - 1) * (int)pageResult)
+                                 .Take((int)pageResult)
+                                 .ToListAsync();
 
-            return response;
+                var response = new ServiceResponse<ProductSearchResultDTO>
+                {
+                    Value = new ProductSearchResultDTO
+                    {
+                        Products = Products,
+                        CurentPage = PageNumber,
+                        Pages = (int)pageCount
+                    }
+
+                };
+                return response;
+            }
+            
+
+           
         }
 
-        public async Task<ServiceResponse<List<string>>> SearchForSugestions(string Text)
+        public async Task<ServiceResponse<List<string>>> SearchForSugestions(string Text,string Category)
         {
-            var products = await FindProductsByText(Text);
+            var products = await FindProductsByText(Text,Category);
             List<string> Sugestions = new List<string>();
 
             foreach (var item in products)
             {
-                if(item.Title.Contains(Text,StringComparison.OrdinalIgnoreCase))
+                if (item.category.Name == Category||Category=="All")
                 {
-                    Sugestions.Add(item.Title);
-                }
-                if (item.Description!=null)
-                {
-                    var punctiation = item.Description.Where(char.IsPunctuation).Distinct().ToArray();
-                    var words =item.Description.Split().Select(s => s.Trim(punctiation));
-
-                    foreach(var word in words)
+                    if (item.Title.Contains(Text, StringComparison.OrdinalIgnoreCase))
                     {
-                        if(word.Contains(Text,StringComparison.OrdinalIgnoreCase) && !Sugestions.Contains(word))
+                        Sugestions.Add(item.Title);
+                    }
+                    if (item.Description != null)
+                    {
+                        var punctiation = item.Description.Where(char.IsPunctuation).Distinct().ToArray();
+                        var words = item.Description.Split().Select(s => s.Trim(punctiation));
+
+                        foreach (var word in words)
                         {
-                            Sugestions.Add(word);
+                            if (word.Contains(Text, StringComparison.OrdinalIgnoreCase) && !Sugestions.Contains(word))
+                            {
+                                Sugestions.Add(word);
+                            }
                         }
                     }
                 }
@@ -123,15 +156,32 @@ namespace BlazorEcomerce.Server.Services
 
         }
 
+
         //Methods not found un IServices
-        private async Task<List<Product>> FindProductsByText(string Text)
+
+        private async Task<List<Product>> FindProductsByText(string Text , string Category)
         {
-            return await _context.Products
-                            .Where(x => x.Description.ToLower().Contains(Text) ||
-                                x.Title.ToLower().Contains(Text))
-                             .Include(p => p.Variants)
-                            .ThenInclude(v => v.ProductType)
-                            .ToListAsync();
+            if(Category=="All")
+            {
+                return await _context.Products
+                           .Where(x => x.Description.ToLower().Contains(Text)||
+                               x.Title.ToLower().Contains(Text))
+                            .Include(p => p.Variants)
+                           .ThenInclude(v => v.ProductType)
+                           .Include(z => z.category)
+                           .ToListAsync();
+            }
+            else
+            {
+                return await _context.Products
+                           .Where(x => x.Description.ToLower().Contains(Text) && x.category.Name == Category ||
+                               x.Title.ToLower().Contains(Text) && x.category.Name == Category)
+                            .Include(p => p.Variants)
+                           .ThenInclude(v => v.ProductType)
+                           .Include(z => z.category)
+                           .ToListAsync();
+            }
+           
         }
 
     }

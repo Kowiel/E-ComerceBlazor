@@ -32,7 +32,7 @@ else
         <a class="btn
                  @(i == _ProductService.CurentPageClient ? "btn-info" : "btn-outline-info")
                  page-selection"
-        href="/search/@_ProductService.LastSearchText/@CoutonPage/@i">@i</a>
+        href="/search/@_ProductService.LastSearchText/@_ProductService.CurentCategory/@CoutonPage/@i">@i</a>
     }
         <div>
             @if (_ProductService.LastSearchText != String.Empty)
@@ -40,15 +40,11 @@ else
                 @for (int i = 1; i < 10;)
                 {
                     var buttonNumber = i;
-                    <a class="btn" href="/search/@_ProductService.LastSearchText/@CoutonPage/1" 
+                    <a class="btn" href="/search/@_ProductService.LastSearchText/@_ProductService.CurentCategory/@CoutonPage/1" 
         @onclick="()=>ChangeCoutOnPage(buttonNumber)">@buttonNumber</a>
                     i=i+2;
                 }
 
-            }
-            else
-            {
-              <a class="btn" href="/@_ProductService.CurentCategory">@_ProductService.CurentCategory</a>
             }
         </div>
 

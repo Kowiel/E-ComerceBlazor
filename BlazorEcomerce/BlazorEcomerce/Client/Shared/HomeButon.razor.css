@@ -4,3 +4,8 @@
     transform: rotate(-3deg);
 }
 
+@media(max-width: 550px) {
+    .home-button {
+        display: none !important;
+    }
+}

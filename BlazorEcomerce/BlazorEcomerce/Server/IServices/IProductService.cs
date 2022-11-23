@@ -11,7 +11,7 @@ namespace BlazorEcomerce.Server.IServices
        public  Task<ServiceResponse<List<Product>>> GetAllFeturedProducts();
        public  Task<ServiceResponse<Product>> GetProductByID(int Id);
        public Task<ServiceResponse<List<Product>>> GetProductByCategory(string CategoryUrl);
-       public Task<ServiceResponse<ProductSearchResultDTO>> SearchForProducts(string SearchText , int PageNumber ,int PageResults);
-        public Task<ServiceResponse<List<string>>> SearchForSugestions(string Text);
+       public Task<ServiceResponse<ProductSearchResultDTO>> SearchForProducts(string SearchText , int PageNumber ,int PageResults, string Category);
+        public Task<ServiceResponse<List<string>>> SearchForSugestions(string Text, string Category);
     }
 }

@@ -24,14 +24,14 @@ namespace BlazorEcomerce.Client.Service
 
         public event Action ProductChanged;
 
-        public async Task GetAllProducts(string? CategoryURL = null)
+        public async Task GetAllProducts(string Category )
         {
             LastSearchText = String.Empty;
-            if (CategoryURL != null)
-                CurentCategory = CategoryURL;
-            var result = CategoryURL==null ?
+            if (Category != null)
+                CurentCategory = Category;
+            var result = Category==null ?
                 await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/products/getallfeatured"):
-                await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/products/getbycategory/{CategoryURL}");
+                await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/products/getbycategory/{Category}");
             if (result != null && result.Value != null)
                 Products = result.Value;
             CurentPageClient = 1;
@@ -49,16 +49,17 @@ namespace BlazorEcomerce.Client.Service
             return result;
         }
 
-        public async Task<List<string>> GetProductSercheSugestion(string searhText)
+        public async Task<List<string>> GetProductSercheSugestion(string searhText, string Category) //Needs Editing
         {
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<string>>>($"api/products/getsugestionserchtext/{searhText}");
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<string>>>($"api/products/getsugestionserchtext/{Category}/{searhText}");
             return result.Value;
         }
 
-        public async Task SerchProducts(string serchtext, int CountOnPage, int page)
+        public async Task SerchProducts(string serchtext,string Category, int CountOnPage, int page) //Needs Editing
         {
             LastSearchText = serchtext;
-            var result = await _http.GetFromJsonAsync<ServiceResponse<ProductSearchResultDTO>>($"api/products/getbyserchtext/{serchtext}/{CountOnPage}/{page}");
+            CurentCategory = Category;
+            var result = await _http.GetFromJsonAsync<ServiceResponse<ProductSearchResultDTO>>($"api/products/getbyserchtext/{serchtext}/{Category}/{CountOnPage}/{page}");
             if (result != null && result.Value != null)
             {
                 Products = result.Value.Products;

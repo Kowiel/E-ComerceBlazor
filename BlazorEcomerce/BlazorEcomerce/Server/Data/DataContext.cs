@@ -54,13 +54,13 @@ namespace BlazorEcomerce.Server.Data
                 {
                     Id = 4,
                     Name = "CC",
-                    URL = "Christina_Carter"
+                    URL = "CAtegory_C"
                 },
                   new Category
                 {
                     Id = 5,
                     Name = "CD",
-                    URL = "claire_dames"
+                    URL = "Category_D"
                   }
 
 
@@ -122,18 +122,18 @@ namespace BlazorEcomerce.Server.Data
            new Product
            {
                Id = 7,
-               Title = "Christina Carter",
-               Description = "A great Fucking pornstar",
-               ImgURL = "https://porn.tattoo/pics/legaction/christina-carter/completely-free-milf-vr/christina-carter-3.jpg",
+               Title = "Pojazd 2",
+               Description = "A great Fucking Car That exists",
+               ImgURL = "https://static.bhphotovideo.com/explora/sites/default/files/styles/960/public/34-trvphoto-949-00184-reduced.png?itok=4A6wlBMA",
                CategoryId = 4,
                Featured=true
            },
            new Product
            {
                Id = 8,
-               Title = "Claire Dames",
-               Description = "A decent Fucking pornstar",
-               ImgURL = "https://external-preview.redd.it/Ti6KimBa2vh2sqPnjwPpou6S_3F440TSO8UNeFXEt1I.jpg?auto=webp&s=4653334b5fc6f001e19a5b4a556be9b103d421a1",
+               Title = "Pojazd 1",
+               Description = "A decent Car that exists",
+               ImgURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQDQeUbjwvSApFpWJ-EkBghl14Hwcx6vImu9VE4LzyFLKGNdB4627nZN_3e3DE8a9WXa4&usqp=CAU",
                CategoryId = 5,
                Featured =true
            },
@@ -283,6 +283,7 @@ namespace BlazorEcomerce.Server.Data
         public DbSet<Category> Categorys { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<ProductVariant> ProductVariants { get; set; }
+        public DbSet<User> Users { get; set; }
 
 
     }

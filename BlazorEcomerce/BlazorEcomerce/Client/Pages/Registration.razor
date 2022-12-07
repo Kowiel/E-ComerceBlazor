@@ -1,0 +1,50 @@
+﻿@page "/register"
+
+
+
+<PageTitle>Registration</PageTitle>
+<h3 style="text-align:center;padding:1rem;">Registration</h3>
+
+
+<EditForm Model="user" OnValidSubmit="HandleRegistration" class="align-content-center">
+   <DataAnnotationsValidator/>
+    <div class="mb-3">
+        <label for="username">Username</label>
+        <InputText id="username" @bind-Value=user.Username class="form-control" />
+        <ValidationMessage For="@(()=>user.Username)"/>
+    </div>
+    <div class="mb-3">
+      <label for="email">Email</label>
+      <InputText id="email" @bind-Value=user.Email class="form-control"/>
+        <ValidationMessage For="@(()=>user.Email)" />
+    </div>
+    <div class="mb-3">
+        <label for="password">Password</label>
+        <InputText id="password" @bind-Value=user.Password class="form-control" type="password" />
+        <ValidationMessage For="@(()=>user.Password)" />
+    </div>
+    <div class="mb-3">
+        <label for="confirmpassword">ConfirmPassword</label>
+        <InputText id="confirmpassword" @bind-Value=user.ConfirmPassword class="form-control" type="password" />
+        <ValidationMessage For="@(()=>user.ConfirmPassword)" />
+    </div>
+    <div class="mb-3">
+        <label for="phonenumber">PhoneNumber</label>
+        <InputText id="phonenumber" @bind-Value=user.PhoneNumber class="form-control" />
+        <ValidationMessage For="@(()=>user.PhoneNumber)" />
+    </div>
+    <button type="submit" class="btn, btn-primary">Register</button>
+</EditForm>
+
+
+
+
+@code 
+{
+    UserRegister user = new UserRegister();
+
+    void HandleRegistration()
+    {
+        Console.WriteLine($"Zrejestrowane z mailem: {user.Email}");
+    }
+}

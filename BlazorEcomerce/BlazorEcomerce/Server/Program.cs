@@ -31,6 +31,7 @@ namespace BlazorEcomerce
             // https://i.stack.imgur.com/M0le5.jpg
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
+            builder.Services.AddScoped<IAutenticationService, AutenticationService>();
 
 
 

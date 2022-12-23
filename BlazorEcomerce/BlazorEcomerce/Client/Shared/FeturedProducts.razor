@@ -42,6 +42,7 @@ else
 
 @code 
 {
+
       protected override void OnInitialized()
     {
         _ProductService.ProductChanged += StateHasChanged;
@@ -50,5 +51,6 @@ else
     {
         _ProductService.ProductChanged -= StateHasChanged;
     }
+
         
 }

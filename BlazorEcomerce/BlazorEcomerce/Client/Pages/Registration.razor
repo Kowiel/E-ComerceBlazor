@@ -1,8 +1,9 @@
 ﻿@page "/register"
-
+@inject IAutenticationService _AutenticationService
 
 
 <PageTitle>Registration</PageTitle>
+<div class="container">
 <h3 style="text-align:center;padding:1rem;">Registration</h3>
 
 
@@ -34,8 +35,11 @@
         <ValidationMessage For="@(()=>user.PhoneNumber)" />
     </div>
     <button type="submit" class="btn, btn-primary">Register</button>
+    <div class="@messageCssClass">
+        <span>@message</span>
+    </div>
 </EditForm>
-
+</div>
 
 
 
@@ -43,8 +47,16 @@
 {
     UserRegister user = new UserRegister();
 
-    void HandleRegistration()
+    string message = String.Empty;
+    string messageCssClass = String.Empty;
+
+    async Task HandleRegistration()
     {
-        Console.WriteLine($"Zrejestrowane z mailem: {user.Email}");
+        var result = await _AutenticationService.Register(user);
+        message = result.ReturnMesage;
+        if (result.Success)
+            messageCssClass = "text-success";
+        else
+            messageCssClass = "text-danger";
     }
 }

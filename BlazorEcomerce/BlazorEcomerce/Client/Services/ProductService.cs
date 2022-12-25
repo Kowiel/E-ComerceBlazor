@@ -49,13 +49,13 @@ namespace BlazorEcomerce.Client.Service
             return result;
         }
 
-        public async Task<List<string>> GetProductSercheSugestion(string searhText, string Category) //Needs Editing
+        public async Task<List<string>> GetProductSercheSugestion(string searhText, string Category) 
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<string>>>($"api/products/getsugestionserchtext/{Category}/{searhText}");
             return result.Value;
         }
 
-        public async Task SerchProducts(string serchtext,string Category, int CountOnPage, int page) //Needs Editing
+        public async Task SerchProducts(string serchtext,string Category, int CountOnPage, int page) 
         {
             LastSearchText = serchtext;
             CurentCategory = Category;

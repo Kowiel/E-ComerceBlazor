@@ -7,5 +7,8 @@ namespace BlazorEcomerce.Client.IService
     {
         Task<ServiceResponse<int>> Register(UserRegister userRegister);
         Task<ServiceResponse<string>> Login(UserLogin userLogin); 
+
+        Task<ServiceResponse<bool>> CHangePassword(ChangePaswordClass paswordClass);
+        Task<ServiceResponse<User>> FindUser();
     }
 }

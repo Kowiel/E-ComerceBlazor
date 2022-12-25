@@ -1,3 +1,5 @@
+global using Microsoft.AspNetCore.Components.Authorization;
+
 using BlazorEcomerce.Client;
 using BlazorEcomerce.Client.IService;
 using BlazorEcomerce.Client.Service;
@@ -5,6 +7,7 @@ using BlazorEcomerce.Client.Services;
 using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
 
 namespace BlazorEcomerce.Client
 {
@@ -23,6 +26,9 @@ namespace BlazorEcomerce.Client
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IAutenticationService, AutenticationService>();
+            builder.Services.AddOptions();
+            builder.Services.AddAuthorizationCore();
+            builder.Services.AddScoped<AuthenticationStateProvider,CustomAuthStateProviderClass>();
 
             await builder.Build().RunAsync();
         }

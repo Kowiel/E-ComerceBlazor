@@ -14,6 +14,18 @@ namespace BlazorEcomerce.Client.Services
             _http = http;
         }
 
+        public async Task<ServiceResponse<bool>> CHangePassword(ChangePaswordClass paswordClass)
+        {
+            var result = await _http.PostAsJsonAsync("api/autentication/changepasword", paswordClass.Password);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
+        }
+
+        public async Task<ServiceResponse<User>> FindUser() 
+        { 
+            var response = await _http.GetFromJsonAsync<ServiceResponse<User>>("api/autentication/getuserdata");
+            return response;
+        }
+
         public async Task<ServiceResponse<string>> Login(UserLogin userLogin)
         {
             var response = await _http.PostAsJsonAsync("api/autentication/login", userLogin);

@@ -71,7 +71,7 @@ namespace BlazorEcomerce.Server.Services
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            user.Role = "User";
+            user.Role = "User"; 
 
             _data.Users.Add(user);
             await _data.SaveChangesAsync();
@@ -97,6 +97,38 @@ namespace BlazorEcomerce.Server.Services
                 return true;
             }
             return false;
+        }
+
+        public async Task<ServiceResponse<User>> GetUserByID(int Id)
+        {
+            var User =await _data.Users.FirstOrDefaultAsync(x=> x.Id == Id);
+            if (User == null)
+            {
+                return new ServiceResponse<User> { Value = null, Success = false, ReturnMesage = "Found no user" };
+            }
+            return new ServiceResponse<User> { Value = User, Success = true, ReturnMesage = "Found the user" };
+        }
+
+        public async Task<ServiceResponse<bool>> ChangePassword(int userId, string newPassword)
+        {
+            var user = await _data.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    ReturnMesage = "User not found."
+                };
+            }
+
+            CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            await _data.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = "Password has been changed." };
         }
 
         // Not in the Interface
@@ -126,6 +158,7 @@ namespace BlazorEcomerce.Server.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Role)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8
@@ -142,6 +175,7 @@ namespace BlazorEcomerce.Server.Services
 
             return jwt;
         }
+
 
     }
 }

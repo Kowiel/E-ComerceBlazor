@@ -4,6 +4,7 @@ using BlazorEcomerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorEcomerce.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221224223139_UpdateRole")]
+    partial class UpdateRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +32,6 @@ namespace BlazorEcomerce.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -40,9 +39,6 @@ namespace BlazorEcomerce.Server.Migrations
                     b.Property<string>("URL")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Visible")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -52,42 +48,32 @@ namespace BlazorEcomerce.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Deleted = false,
                             Name = "Name1",
-                            URL = "Name_One",
-                            Visible = true
+                            URL = "Name_One"
                         },
                         new
                         {
                             Id = 2,
-                            Deleted = false,
                             Name = "Name2",
-                            URL = "Name_two",
-                            Visible = true
+                            URL = "Name_two"
                         },
                         new
                         {
                             Id = 3,
-                            Deleted = false,
                             Name = "Name3",
-                            URL = "Name_three",
-                            Visible = true
+                            URL = "Name_three"
                         },
                         new
                         {
                             Id = 4,
-                            Deleted = false,
                             Name = "CC",
-                            URL = "CAtegory_C",
-                            Visible = true
+                            URL = "CAtegory_C"
                         },
                         new
                         {
                             Id = 5,
-                            Deleted = false,
                             Name = "CD",
-                            URL = "Category_D",
-                            Visible = true
+                            URL = "Category_D"
                         });
                 });
 

@@ -2,9 +2,11 @@ using BlazorEcomerce.Server.Data;
 using BlazorEcomerce.Server.IServices;
 using BlazorEcomerce.Server.Services;
 using BlazroEcomerce.Shared.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorEcomerce
 {
@@ -32,15 +34,28 @@ namespace BlazorEcomerce
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IAutenticationService, AutenticationService>();
-
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey =
+                    new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                    .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+                ValidateIssuer = false,
+                ValidateAudience = false
+             };
+            });
+            builder.Services.AddHttpContextAccessor();
 
 
 
             //Build APP!!
             var app = builder.Build();
-            
 
 
+            app.UseSwaggerUI();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -57,7 +72,6 @@ namespace BlazorEcomerce
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI();
             app.UseHttpsRedirection();
 
             app.UseBlazorFrameworkFiles();
@@ -65,6 +79,8 @@ namespace BlazorEcomerce
 
             app.UseRouting();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapRazorPages();
             app.MapControllers();

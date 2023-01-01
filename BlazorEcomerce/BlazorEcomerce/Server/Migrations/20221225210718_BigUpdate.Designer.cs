@@ -4,6 +4,7 @@ using BlazorEcomerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorEcomerce.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221225210718_BigUpdate")]
+    partial class BigUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +93,7 @@ namespace BlazorEcomerce.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlazorEcomerce.Shared.Models.Image", b =>
+            modelBuilder.Entity("BlazorEcomerce.Shared.Models.Price", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -99,18 +101,41 @@ namespace BlazorEcomerce.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("FileData")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("NewPrice")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("OldPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("PriceChange")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.ToTable("Prices");
 
-                    b.ToTable("Images");
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            NewPrice = 72m,
+                            OldPrice = 72m,
+                            PriceChange = new DateTime(2022, 12, 25, 22, 7, 18, 482, DateTimeKind.Local).AddTicks(8531)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            NewPrice = 2m,
+                            OldPrice = 2m,
+                            PriceChange = new DateTime(2022, 12, 25, 22, 7, 18, 482, DateTimeKind.Local).AddTicks(8564)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            NewPrice = 7m,
+                            OldPrice = 7m,
+                            PriceChange = new DateTime(2022, 12, 25, 22, 7, 18, 482, DateTimeKind.Local).AddTicks(8567)
+                        });
                 });
 
             modelBuilder.Entity("BlazorEcomerce.Shared.Models.User", b =>
@@ -164,9 +189,6 @@ namespace BlazorEcomerce.Server.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -178,8 +200,8 @@ namespace BlazorEcomerce.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("PriceId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -191,12 +213,11 @@ namespace BlazorEcomerce.Server.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Visible")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("PriceId");
 
                     b.HasIndex("UserId");
 
@@ -208,162 +229,133 @@ namespace BlazorEcomerce.Server.Migrations
                             Id = 1,
                             CategoryId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Description 3 Description 3 Description 3 Description 3 Description 3 ",
                             Featured = true,
                             ImgURL = "https://images.pexels.com/photos/762687/pexels-photo-762687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Title 1",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Description 3",
                             Featured = false,
                             ImgURL = "https://images.pexels.com/photos/768125/pexels-photo-768125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Price = 2m,
+                            PriceId = 2,
                             Title = "Title 2",
-                            UserId = 9,
-                            Visible = true
+                            UserId = 9
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Description 3",
                             Featured = false,
                             ImgURL = "https://images.pexels.com/photos/2237801/pexels-photo-2237801.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Title 3",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 4,
                             CategoryId = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Description 4",
                             Featured = false,
                             ImgURL = "https://images.pexels.com/photos/762687/pexels-photo-762687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Price = 3m,
+                            PriceId = 3,
                             Title = "Title 4",
-                            UserId = 9,
-                            Visible = true
+                            UserId = 9
                         },
                         new
                         {
                             Id = 5,
                             CategoryId = 2,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Description 5",
                             Featured = false,
                             ImgURL = "https://images.pexels.com/photos/768125/pexels-photo-768125.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Title 5",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 6,
                             CategoryId = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Description 6",
                             Featured = false,
                             ImgURL = "https://images.pexels.com/photos/2237801/pexels-photo-2237801.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Title 6",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 7,
                             CategoryId = 4,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "A great Fucking Car That exists",
                             Featured = true,
                             ImgURL = "https://static.bhphotovideo.com/explora/sites/default/files/styles/960/public/34-trvphoto-949-00184-reduced.png?itok=4A6wlBMA",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Pojazd 2",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 8,
                             CategoryId = 5,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "A decent Car that exists",
                             Featured = true,
                             ImgURL = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQDQeUbjwvSApFpWJ-EkBghl14Hwcx6vImu9VE4LzyFLKGNdB4627nZN_3e3DE8a9WXa4&usqp=CAU",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Pojazd 1",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 9,
                             CategoryId = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "Day of the Tentacle, also known as Maniac Mansion II: Day of the Tentacle, is a 1993 graphic adventure game developed and published by LucasArts. It is the sequel to the 1987 game Maniac Mansion.",
                             Featured = false,
                             ImgURL = "https://upload.wikimedia.org/wikipedia/en/7/79/Day_of_the_Tentacle_artwork.jpg",
-                            Price = 3m,
+                            PriceId = 3,
                             Title = "Day of the Tentacle",
-                            UserId = 9,
-                            Visible = true
+                            UserId = 9
                         },
                         new
                         {
                             Id = 10,
                             CategoryId = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "The Xbox is a home video game console and the first installment in the Xbox series of video game consoles manufactured by Microsoft.",
                             Featured = false,
                             ImgURL = "https://upload.wikimedia.org/wikipedia/commons/4/43/Xbox-console.jpg",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Xbox",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         },
                         new
                         {
                             Id = 11,
                             CategoryId = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Deleted = false,
                             Description = "The Super Nintendo Entertainment System (SNES), also known as the Super NES or Super Nintendo, is a 16-bit home video game console developed by Nintendo that was released in 1990 in Japan and South Korea.",
                             Featured = false,
                             ImgURL = "https://upload.wikimedia.org/wikipedia/commons/e/ee/Nintendo-Super-Famicom-Set-FL.jpg",
-                            Price = 1m,
+                            PriceId = 1,
                             Title = "Super Nintendo Entertainment System",
-                            UserId = 7,
-                            Visible = true
+                            UserId = 7
                         });
-                });
-
-            modelBuilder.Entity("BlazorEcomerce.Shared.Models.Image", b =>
-                {
-                    b.HasOne("BlazroEcomerce.Shared.Models.Product", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("BlazroEcomerce.Shared.Models.Product", b =>
@@ -374,20 +366,23 @@ namespace BlazorEcomerce.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BlazorEcomerce.Shared.Models.Price", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("BlazorEcomerce.Shared.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Price");
+
                     b.Navigation("User");
 
                     b.Navigation("category");
-                });
-
-            modelBuilder.Entity("BlazroEcomerce.Shared.Models.Product", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

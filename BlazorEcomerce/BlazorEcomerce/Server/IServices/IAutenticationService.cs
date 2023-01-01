@@ -11,7 +11,10 @@ namespace BlazorEcomerce.Server.IServices
         Task<bool> UserExistsUsername(string Username);
         Task<ServiceResponse<string>> Login(string Username, string password);
         Task<ServiceResponse<bool>> ChangePassword(int userId, string newPassword);
+        Task<ServiceResponse<bool>> ChangeEmail(int userId, string newEmail);
+        Task<ServiceResponse<bool>> ChangeNumber(int userId, string newNumber);
         Task<ServiceResponse<User>> GetUserByID(int Id);
+        Task<ServiceResponse<bool>> ResetPasword(string Email);
 
     }
 }

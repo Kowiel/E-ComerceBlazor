@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using BlazorEcomerce.Shared.Services;
 using BlazorEcomerce.Server.IServices;
 using BlazorEcomerce.Shared.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
+using System.Security.Claims;
 
 namespace BlazorEcomerce.Server.Controllers
 {
@@ -19,6 +22,44 @@ namespace BlazorEcomerce.Server.Controllers
         public ProductController(IProductService productservice)
         {
            _productservice = productservice;
+        }
+        [HttpGet("getalluser/", Name = "getalluser"), Authorize(Roles = "Admin,User")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAllUserProducts()
+        {
+            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _productservice.GetAllUserProducts(int.Parse(UserID));
+            return Ok(result);
+        }
+        [HttpPost("create/", Name = "create"), Authorize(Roles = "Admin,User")]
+        public async Task<ActionResult<ServiceResponse<Product>>> CreateProduct(Product product)
+        {
+            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _productservice.Create(product,int.Parse(UserID));
+            return Ok(result);
+        }
+
+        [HttpPut("edit/", Name = "edit"), Authorize(Roles = "Admin,User")]
+        public async Task<ActionResult<ServiceResponse<Product>>> UpdateProduct(Product product)
+        {
+            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+          
+            var result = await _productservice.Update(product, int.Parse(UserID));
+            return Ok(result);
+        }
+
+
+        [HttpDelete("deleteone/{id}",Name = "delete"), Authorize(Roles = "Admin,User")]
+        public async Task<ActionResult<ServiceResponse<bool>>> DeleteProduct(int id)
+        {
+            var result = await _productservice.Delete(id);
+            return Ok(result);
+        }
+
+        [HttpGet("getalladmin/", Name = "getalladmin"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetAllAdminProducts()
+        {
+            var result = await _productservice.GetAllAdminProducts();
+            return Ok(result);
         }
 
         [HttpGet("getall/", Name = "GetProduct")]

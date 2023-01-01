@@ -16,15 +16,29 @@ else
         <div class="row">
         <div class="col-sm-6">
             <h3>@product.Title</h3>
-             <a href="/product/@product.Id"><img src="@product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/></a>
+             <a href="/product/@product.Id">
+                @if (!string.IsNullOrEmpty(product.ImgURL))
+                        {
+                            <img style="max-height:250px; max-width:200px;" class="media-img" src="@product.ImgURL" alt="@product.Title" />
+                        }
+                        else if (product.Images.Count > 0)
+                        {
+                            <img style="max-height:250px; max-width:200px;" class="media-img" src="@product.Images[0].FileData" alt="@product.Title" />
+                        } 
+            </a>
             </div>
         <div class="col-sm-6">
+         <a href="/product/@product.Id">
         <h2>Description</h2>
+                    </a>
         <br>
+         <a href="/product/@product.Id">
         <p>@product.Description</p>
-        <p><b>Price:   </b> @GetPriceText(product)</p>
+                    </a>
+        <p><b>Price:   </b> @product.Price</p>
         </div>
         </div>
+        <hr/>
     }
 
         @for (var i = 1; i <= _ProductService.PageCount; i++)
@@ -71,16 +85,5 @@ else
             CoutonPage = i;
         }
 
-    private string GetPriceText(Product product)
-    {
-        var variants = product.Variants;
-        if (variants.Count == 0)
-            return string.Empty;
-        if(variants.Count==1)
-            return $"{variants[0].Price}";
-        decimal min = variants.Min(p => p.Price);
-        decimal max = variants.Max(p => p.Price);
-        return $"Starting at: {min} to {max}";
 
-    }
 }

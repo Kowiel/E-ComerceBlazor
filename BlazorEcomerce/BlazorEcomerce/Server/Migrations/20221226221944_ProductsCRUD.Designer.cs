@@ -4,6 +4,7 @@ using BlazorEcomerce.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorEcomerce.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221226221944_ProductsCRUD")]
+    partial class ProductsCRUD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,28 +91,6 @@ namespace BlazorEcomerce.Server.Migrations
                             URL = "Category_D",
                             Visible = true
                         });
-                });
-
-            modelBuilder.Entity("BlazorEcomerce.Shared.Models.Image", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("FileData")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("BlazorEcomerce.Shared.Models.User", b =>
@@ -359,13 +339,6 @@ namespace BlazorEcomerce.Server.Migrations
                         });
                 });
 
-            modelBuilder.Entity("BlazorEcomerce.Shared.Models.Image", b =>
-                {
-                    b.HasOne("BlazroEcomerce.Shared.Models.Product", null)
-                        .WithMany("Images")
-                        .HasForeignKey("ProductId");
-                });
-
             modelBuilder.Entity("BlazroEcomerce.Shared.Models.Product", b =>
                 {
                     b.HasOne("BlazorEcomerce.Shared.Models.Category", "category")
@@ -383,11 +356,6 @@ namespace BlazorEcomerce.Server.Migrations
                     b.Navigation("User");
 
                     b.Navigation("category");
-                });
-
-            modelBuilder.Entity("BlazroEcomerce.Shared.Models.Product", b =>
-                {
-                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

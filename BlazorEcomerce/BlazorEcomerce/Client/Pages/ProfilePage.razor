@@ -8,32 +8,59 @@
 </AuthorizeView>
 
 <br/>
+<br/>
+    <br />
 <h3>Informacje o tobie</h3>
 <h5>Dane Kontaktowe</h5>
 <p>Mail: @Userdata.Email</p>
 <p>Phone Number: @Userdata.PhoneNumber</p>
 <b>Role: @Userdata.Role [Cant be eddited]</b>
+    <br />
+    <br />
+    <hr />
+    <h5> Eddit Phone Number</h5>
 
-<h5> Eddit Contact details</h5>
-<p>If you want them the same way enter the same data</p>
-
-  <EditForm Model="request" OnValidSubmit="ChangeData">
+    <EditForm Model="requestPhone" OnValidSubmit="ChangePhone">
     <DataAnnotationsValidator></DataAnnotationsValidator>
     <div class="mb-3">
-        <label for="password">New Phone Number</label>
+        <label for="phonenumber">New Phone Number</label>
         <br/>
-            <InputText id="password" @bind-Value="request.Password" class="justify-content-center" type="text" />
-       <ValidationMessage For="@(() => request.Password)" />
+            <InputText id="phonenumber" @bind-Value="requestPhone.PhoneNumber" class="justify-content-center"  />
+       <ValidationMessage For="@(() => requestPhone.PhoneNumber)" />
     </div>
 <div class="mb-3">
-        <label for="confirmPassword">Confirm New Password</label>
+            <label for="confirmphonenumber">Confirm New Phone Number</label>
         <br />
-            <InputText id="confirmPassword" @bind-Value="request.ConfirmPassword" class="justify-content-center" type="text" />
-        <ValidationMessage For="@(() => request.ConfirmPassword)" />
+            <InputText id="confirmphonenumber" @bind-Value="requestPhone.ConfirmPhoneNumber" class="justify-content-center" />
+        <ValidationMessage For="@(() => requestPhone.ConfirmPhoneNumber)" />
 </div>
     <button type="submit" class="btn btn-primary">Apply</button>
 </EditForm>
+    <br />
+    <br />
+    <hr />
 
+    <h5> Eddit EmailAddres</h5>
+
+    <EditForm Model="requestEmail" OnValidSubmit="ChangeEmail">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="mb-3">
+            <label for="emailaddres">New EmailAddres</label>
+            <br />
+            <InputText id="emailaddres" @bind-Value="requestEmail.Email" class="justify-content-center"  />
+            <ValidationMessage For="@(() => requestEmail.Email)" />
+        </div>
+        <div class="mb-3">
+            <label for="confirmemailaddres">Confirm New EmailAddres</label>
+            <br />
+            <InputText id="confirmemailaddres" @bind-Value="requestEmail.ConfirmEmail" class="justify-content-center"  />
+            <ValidationMessage For="@(() => requestEmail.ConfirmEmail)" />
+        </div>
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </EditForm>
+    <br />
+    <br />
+    <hr />
 <h5>Change Password</h5>
 
 <EditForm Model="request" OnValidSubmit="ChangePassword">
@@ -55,11 +82,13 @@
 
 
 </div>
-@message
+<h2 style="text-align:center"><b>@message</b></h2>
 
 @code {
 
     ChangePaswordClass request = new ChangePaswordClass();
+    ChangeEmailClass requestEmail = new ChangeEmailClass();
+    ChangePhoneNumberClass requestPhone = new ChangePhoneNumberClass();
     User Userdata = new User();
     string message = string.Empty;
 
@@ -69,9 +98,14 @@
         message = result.ReturnMesage;
     }
 
-     private async Task ChangeData()
+     private async Task ChangeEmail()
     {
-        var result = await _IAutenticationService.CHangePassword(request);
+        var result = await _IAutenticationService.ChangeEmail(requestEmail);
+        message = result.ReturnMesage;
+    }
+    private async Task ChangePhone()
+    {
+        var result = await _IAutenticationService.ChangePhoneNumber(requestPhone);
         message = result.ReturnMesage;
     }
 

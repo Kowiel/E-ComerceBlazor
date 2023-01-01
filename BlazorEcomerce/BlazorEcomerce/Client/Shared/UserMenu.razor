@@ -3,10 +3,9 @@
 
 @if (authorized)
 {
-    <p style="text-align:center; font-weight:bold;">Admin Panel</p>
-    <a class="dropdown-item" href="adminpanel/categories">Categories</a>
-    <a class="dropdown-item" href="adminpanel/products">Products</a>
-    <hr />
+        <p style="text-align:center; font-weight:bold;">User Panel</p>
+        <a class="dropdown-item" href="userpanel/products">My Products</a>
+        <hr />
 }
 
 @code {
@@ -16,7 +15,7 @@
     {
         string role = (await A_S_Prrovider.GetAuthenticationStateAsync())
             .User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-        if (role.Contains("Admin"))
+        if (role.Contains("User") || role.Contains("Admin"))
         {
             authorized = true;
         }

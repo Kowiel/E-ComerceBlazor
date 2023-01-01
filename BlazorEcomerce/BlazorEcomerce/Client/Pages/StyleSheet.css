@@ -9,6 +9,10 @@
     animation: spin 2s linear infinite;
 }
 
+body
+{
+    background-color: darkgrey;
+}
 
 @-webkit-keyframes spin {
     0% {

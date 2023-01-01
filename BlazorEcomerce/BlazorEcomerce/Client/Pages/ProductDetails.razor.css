@@ -1,6 +1,8 @@
-﻿.Baner {
-    background-color: black;
-    font-size: 2rem;
+﻿img
+{
+    max-width:400px;
+    max-height:300px;
+    margin-bottom:1rem;
 }
 
 .oldPrice {
@@ -15,8 +17,14 @@
 }
 
     .Baner p {
-        padding: 15px;
+        padding: 5px;
     }
+
+.p-5
+{
+    padding: 0.5rem !important;
+    width: 100%;
+}
 
 @media(max-width: 600px) {
     .Baner {
@@ -58,5 +66,42 @@
 
     100% {
         transform: rotate(360deg);
+    }
+}
+.media {
+    text-align: center;
+    
+}
+.media-body {
+    padding-top: 1rem;
+    margin-top: 0.75rem;
+}
+﻿.media-img {
+    max-height: 300px;
+    border-radius: 6px;
+    margin: 0 10px 10px 10px;
+}
+
+.media-img-wrapper {
+    max-height: 300px;
+    text-align: center;
+}
+
+.original-price {
+    text-decoration: line-through;
+}
+
+@media (max-width: 1023.98px) {
+    .media {
+        flex-direction: column;
+    }
+
+    .media-img {
+        max-width: 300px;
+    }
+
+    .media-img-wrapper {
+        width: 100%;
+        height: auto;
     }
 }

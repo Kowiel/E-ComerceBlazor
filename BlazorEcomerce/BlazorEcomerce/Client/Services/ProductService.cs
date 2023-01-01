@@ -21,8 +21,39 @@ namespace BlazorEcomerce.Client.Service
         public int CurentPageClient { get; set; } = 1;
         public int PageCount { get; set; } = 0;
         public string LastSearchText { get; set;}=String.Empty;
+        public List<Product> AdminProducts { get; set; }
 
         public event Action ProductChanged;
+
+        public async Task<Product> CreateProduct(Product product)
+        {
+            var result = await _http.PostAsJsonAsync("api/products/create", product);
+            var newProduct = (await result.Content
+                .ReadFromJsonAsync<ServiceResponse<Product>>()).Value;
+            return newProduct;
+        }
+
+        public async Task DeleteProduct(Product product)
+        {
+            var result = await _http.DeleteAsync($"api/products/deleteone/{product.Id}");
+        }
+
+        public async Task<Product> UpdateProduct(Product product)
+        {
+            var result = await _http.PutAsJsonAsync($"api/products/edit", product);
+            var content = await result.Content.ReadFromJsonAsync<ServiceResponse<Product>>();
+            return content.Value;
+        }
+
+        public async Task GetAllAdminProducts()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/products/getalladmin");
+            AdminProducts = result.Value;
+            CurentPageClient = 1;
+            PageCount = 0;
+            if (AdminProducts.Count == 0)
+                message = "No products found.";
+        }
 
         public async Task GetAllProducts(string Category )
         {
@@ -70,6 +101,16 @@ namespace BlazorEcomerce.Client.Service
             if (Products.Count == 0)
                 message = "No products None";
             ProductChanged?.Invoke();
+        }
+
+        public async Task GetAllUserProducts()
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/products/getalluser");
+            AdminProducts = result.Value;
+            CurentPageClient = 1;
+            PageCount = 0;
+            if (AdminProducts.Count == 0)
+                message = "No products found.";
         }
     }
 }

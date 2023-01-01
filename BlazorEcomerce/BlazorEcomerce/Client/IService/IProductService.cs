@@ -7,6 +7,7 @@ namespace BlazorEcomerce.Client.IService
     public interface IProductService
     {
         List<Product> Products { get; set; }
+        List<Product> AdminProducts { get; set; }
         Task GetAllProducts(string Category);
         Task<ServiceResponse<Product>> GetProduct(int Id);
 
@@ -21,7 +22,11 @@ namespace BlazorEcomerce.Client.IService
         Task SerchProducts(string searhText,string Category ,int ProductsOnPage ,int Page);
         Task<List<string>> GetProductSercheSugestion(string searhText , string Category);
 
-
+        Task GetAllAdminProducts();
+        Task GetAllUserProducts();
+        Task<Product> CreateProduct(Product product);
+        Task<Product> UpdateProduct(Product product);
+        Task DeleteProduct(Product product);
 
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BlazorEcomerce.Shared.Models
 {
-    public class ProductType
+    public class Image
     {
         public int Id { get; set; }
-        public string Name { get; set; } = String.Empty;
+        public string FileData { get; set; } = String.Empty;
+
     }
 }

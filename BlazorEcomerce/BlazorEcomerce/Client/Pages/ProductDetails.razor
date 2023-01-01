@@ -1,7 +1,6 @@
 ﻿@page "/product/{id:int}"
 @using BlazorEcomerce.Shared.Models
 @inject IProductService _ProductService
-@layout MainPageLayoutWithoutNav
 
 @if(Product==null)
 {
@@ -10,42 +9,41 @@
 }
 else
 {
-    <div class="container-fluid p-5 text-white text-center Baner">
-        <h1>@Product.Title</h1>
-    </div>
-    <div class="container mt-5 ">
-                @if(Product.Variants.Count>1)
+    <div class="media">
+        <div class="media-img-wrapper mr-2">
+            @if (!string.IsNullOrEmpty(Product.ImgURL))
             {
-                <div class="col-sm-6">
-                    <select class="form-select-lg" @bind="CurentTypeId">
-                        @foreach(var variant in Product.Variants)
-                        {
-                            <option value=@variant.ProductTypeId>@variant.ProductType.Name</option>
-                        }
-                    </select>
-                </div>
+                <img class="media-img" src="@Product.ImgURL" alt="@Product.Title" />
             }
-    </div>
-    <div class="container mt-5 ">
-        <div class="row">
-        <div class="col-sm-6">
-            <img src="@Product.ImgURL" class="img-thumbnail rounded-start  h-75 w-100"/>
-        </div>
-        <div class="col-sm-6">
-        <p>@Product.Description</p>
-        </div> 
-            @if(GetSelectedVariant()!=null)
+            else
             {
-                if(GetSelectedVariant().OriginalPrice>GetSelectedVariant().Price)
-                {
-                     <p class="oldPrice"><b>Old PRice:   </b>$@GetSelectedVariant().OriginalPrice</p>
-                }
-        <p class="newPrice"><b>Price:   </b>$@GetSelectedVariant().Price</p>
-            }    
-  </div>
-  
-</div>
-<a href="/">BaCK</a>
+                <MudCarousel Class="mud-width-full" ItemsSource="@Product.Images" Style="height: 400px;">
+                    <ItemTemplate>
+                        <MudImage Style="height:350px;width:300px" Src="@context.FileData"></MudImage>>
+                    </ItemTemplate>
+                </MudCarousel>
+            }
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+
+        <div class="media-body">
+            <h2 class="mb-0">@Product.Title</h2>
+            <p>@Product.Description</p>
+            <h4 class="newPrice">@Product.Price</h4>
+        </div>
+        <div class ="media-body">
+            <h5>Sellers Details</h5>
+            <p>Username: @Product.User.Username</p>
+            <p>Email: @Product.User.Email</p>
+            <p>PhoneNumber: @Product.User.PhoneNumber</p>
+        </div>
+    </div>
+
+
+
 
   
 }
@@ -72,16 +70,7 @@ else
         else
         {
             Product = result.Value;
-            if(Product.Variants.Count>0)
-            {
-                CurentTypeId = Product.Variants[0].ProductTypeId; 
-            }
         }
     }
 
-    private ProductVariant GetSelectedVariant()
-    {
-            var variant = Product.Variants.FirstOrDefault(v => v.ProductTypeId == CurentTypeId);
-            return variant;
-    }
 }

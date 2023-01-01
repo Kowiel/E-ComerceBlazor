@@ -66,6 +66,34 @@ namespace BlazorEcomerce.Server.Controllers
 
             return Ok(response);
         }
+        [HttpPost("changenumber/", Name = "changenumber"), Authorize]
+        public async Task<ActionResult<ServiceResponse<bool>>> ChangeNumber([FromBody] string newnumber)
+        {
+            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier); //Set while craeting the token. Geting the user id/
+
+            var response = await _AutenticationService.ChangeNumber(int.Parse(UserID), newnumber);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+        [HttpPost("changeemail/", Name = "changeemail"), Authorize]
+        public async Task<ActionResult<ServiceResponse<bool>>> ChangeEmail([FromBody] string newemail)
+        {
+            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier); //Set while craeting the token. Geting the user id/
+
+            var response = await _AutenticationService.ChangeEmail(int.Parse(UserID), newemail);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
 
         [HttpGet("getuserdata/", Name = "getuserdata"), Authorize]
         public async Task<ActionResult<ServiceResponse<User>>> GetUser()
@@ -73,6 +101,19 @@ namespace BlazorEcomerce.Server.Controllers
             var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier); 
 
             var response = await _AutenticationService.GetUserByID(int.Parse(UserID));
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost("resetpasword/", Name = "resetpasword")]
+        public async Task<ActionResult<ServiceResponse<bool>>> ResetPassword([FromBody] string email)
+        {
+            var response = await _AutenticationService.ResetPasword(email);
 
             if (!response.Success)
             {

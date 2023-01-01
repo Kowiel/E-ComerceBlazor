@@ -2,9 +2,14 @@
 using BlazorEcomerce.Server.IServices;
 using BlazorEcomerce.Shared.Models;
 using BlazorEcomerce.Shared.Services;
+using MailKit.Net.Smtp;
+using MailKit.Security;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using MimeKit;
+using MimeKit.Text;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -176,6 +181,79 @@ namespace BlazorEcomerce.Server.Services
             return jwt;
         }
 
+        public async Task<ServiceResponse<bool>> ChangeEmail(int userId, string newEmail)
+        {
+            var user = await _data.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    ReturnMesage = "User not found."
+                };
+            }
 
+            user.Email = newEmail;
+
+            await _data.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = "Email has been changed." };
+        }
+
+        public async Task<ServiceResponse<bool>> ChangeNumber(int userId, string newNumber)
+        {
+            var user = await _data.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    ReturnMesage = "User not found."
+                };
+            }
+
+            user.PhoneNumber = newNumber;
+
+            await _data.SaveChangesAsync();
+            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = "PhoneNumber has been changed." };
+        }
+
+        public async Task<ServiceResponse<bool>> ResetPasword(string Email)
+        {
+            var user = await _data.Users.FirstOrDefaultAsync(x => x.Email == Email);
+            if (user == null)
+            {
+                return new ServiceResponse<bool> { Value = false, Success = false, ReturnMesage = "Reset Email has not been sent no such user" };
+            }
+
+            var email = new MimeMessage();
+            email.From.Add(MailboxAddress.Parse("wellington62@ethereal.email"));
+            email.To.Add(MailboxAddress.Parse("wellington62@ethereal.email"));
+            email.Subject = "TEST";
+            string password = GenerateRandomPassword(10);
+            email.Body = new TextPart(TextFormat.Html) { Text = $"Your Reset Pasword is {password}" };
+
+            using var smtp = new SmtpClient();
+            smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("wellington62@ethereal.email", "AJMEsjNtrbVUExbR3X");
+            smtp.Send(email);
+            smtp.Disconnect(true);
+
+            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = "Reset Email has ben sent" };
+        }
+
+        static string GenerateRandomPassword(int length)
+        {
+            const string validCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            Random random = new Random();
+            char[] characters = new char[length];
+
+            for (int i = 0; i < length; i++)
+            {
+                characters[i] = validCharacters[random.Next(validCharacters.Length)];
+            }
+
+            return new string(characters);
+        }
     }
 }

@@ -14,9 +14,20 @@ namespace BlazorEcomerce.Client.Services
             _http = http;
         }
 
+        public async Task<ServiceResponse<bool>> ChangeLocaliation(UserLocalisation userLocalisation)
+        {
+            var Localisation = userLocalisation.PostalCode + " " + userLocalisation.Country + " " + userLocalisation.City + " " + userLocalisation.Adres;
+            var result = await _http.PostAsJsonAsync("api/autentication/changelocalisation", Localisation);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
+        }
         public async Task<ServiceResponse<bool>> ChangeEmail(ChangeEmailClass changeEmail)
         {
             var result = await _http.PostAsJsonAsync("api/autentication/changeemail", changeEmail.Email);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
+        }
+        public async Task<ServiceResponse<bool>> ResetPassword(ChangeEmailClass changeEmail)
+        {
+            var result = await _http.PostAsJsonAsync("api/autentication/resetpasword", changeEmail.Email);
             return await result.Content.ReadFromJsonAsync<ServiceResponse<bool>>();
         }
 
@@ -49,5 +60,7 @@ namespace BlazorEcomerce.Client.Services
             var response = await _http.PostAsJsonAsync("api/autentication/register", userRegister);
             return await response.Content.ReadFromJsonAsync<ServiceResponse<int>>();
         }
+
+
     }
 }

@@ -2,6 +2,7 @@
 @using BlazorEcomerce.Shared.Models
 @inject IProductService _ProductService
 
+<PageTitle>Virtual Notice-board</PageTitle>
 @if(Product==null)
 {
     <div class="loader"> </div>
@@ -39,6 +40,7 @@ else
             <p>Username: @Product.User.Username</p>
             <p>Email: @Product.User.Email</p>
             <p>PhoneNumber: @Product.User.PhoneNumber</p>
+            <p>PhoneNumber: @Product.User.Localisation</p>
         </div>
     </div>
 

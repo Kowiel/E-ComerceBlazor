@@ -19,6 +19,14 @@ namespace BlazorEcomerce.Shared.Models
         public string ConfirmPassword { get; set; } = String.Empty;
         [Required, Phone]
         public string PhoneNumber { get; set; } = String.Empty;
-        
+        [Required]
+        public string PostalCode { get; set; }
+        [Required]
+        public string Country { get; set; }
+        [Required]
+        public string City { get; set; }
+        [Required]
+        public string Adres { get; set; }
+
     }
 }

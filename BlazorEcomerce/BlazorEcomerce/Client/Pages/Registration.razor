@@ -34,7 +34,31 @@
         <InputText id="phonenumber" @bind-Value=user.PhoneNumber class="form-control" />
         <ValidationMessage For="@(()=>user.PhoneNumber)" />
     </div>
-    <button type="submit" class="btn, btn-primary">Register</button>
+        <div class="mb-3">
+            <label for="postcode">New Post Code</label>
+            <br />
+            <InputText id="postcode" @bind-Value="user.PostalCode" class="form-control" />
+            <ValidationMessage For="@(() => user.PostalCode)" />
+        </div>
+        <div class="mb-3">
+            <label for="Country">New Country</label>
+            <br />
+            <InputText id="Country" @bind-Value="user.Country" class="form-control" />
+            <ValidationMessage For="@(() => user.Country)" />
+        </div>
+        <div class="mb-3">
+            <label for="City">New City</label>
+            <br />
+            <InputText id="City" @bind-Value="user.City" class="form-control" />
+            <ValidationMessage For="@(() => user.City)" />
+        </div>
+        <div class="mb-3">
+            <label for="Adres">New Adres</label>
+            <br />
+            <InputText id="Adres" @bind-Value="user.Adres" class="form-control" />
+            <ValidationMessage For="@(() => user.Adres)" />
+        </div>
+    <button style="padding:10px;" type="submit" class="btn, btn-primary">Register</button>
     <div class="@messageCssClass">
         <span>@message</span>
     </div>

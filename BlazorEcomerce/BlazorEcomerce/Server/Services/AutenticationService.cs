@@ -227,19 +227,21 @@ namespace BlazorEcomerce.Server.Services
             }
 
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("wellington62@ethereal.email"));
-            email.To.Add(MailboxAddress.Parse("wellington62@ethereal.email"));
-            email.Subject = "TEST";
-            string password = GenerateRandomPassword(10);
+            email.From.Add(MailboxAddress.Parse("michal.patryk.urban@gmail.com"));
+            email.To.Add(MailboxAddress.Parse($"{user.Email}"));
+            email.Subject = $"Password Reset For {user.Username}";
+            string password = GenerateRandomPassword(15);
             email.Body = new TextPart(TextFormat.Html) { Text = $"Your Reset Pasword is {password}" };
 
             using var smtp = new SmtpClient();
-            smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("wellington62@ethereal.email", "AJMEsjNtrbVUExbR3X");
+            smtp.Connect("smtp-relay.sendinblue.com", 587, SecureSocketOptions.StartTls);
+            smtp.Authenticate("michal.patryk.urban@gmail.com", "hVCQS7qTLJDPtd4M");
             smtp.Send(email);
             smtp.Disconnect(true);
 
-            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = "Reset Email has ben sent" };
+            var response =ChangePassword(user.Id, password);
+
+            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = $"Reset Email has ben sent and {response.Result.ReturnMesage}" };
         }
 
         static string GenerateRandomPassword(int length)
@@ -254,6 +256,24 @@ namespace BlazorEcomerce.Server.Services
             }
 
             return new string(characters);
+        }
+
+        public async Task<ServiceResponse<bool>> ChangeLocalisation(int userId, string adres)
+        {
+            var user = await _data.Users.FindAsync(userId);
+            if (user == null)
+            {
+                return new ServiceResponse<bool>
+                {
+                    Success = false,
+                    ReturnMesage = "User not found."
+                };
+            }
+            user.Localisation= adres;
+
+            await _data.SaveChangesAsync();
+
+            return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = $"adres has been changed to {adres}" };
         }
     }
 }

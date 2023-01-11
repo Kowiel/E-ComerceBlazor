@@ -13,6 +13,7 @@ namespace BlazorEcomerce.Server.IServices
         Task<ServiceResponse<bool>> ChangePassword(int userId, string newPassword);
         Task<ServiceResponse<bool>> ChangeEmail(int userId, string newEmail);
         Task<ServiceResponse<bool>> ChangeNumber(int userId, string newNumber);
+        Task<ServiceResponse<bool>> ChangeLocalisation(int userId,string adres);
         Task<ServiceResponse<User>> GetUserByID(int Id);
         Task<ServiceResponse<bool>> ResetPasword(string Email);
 

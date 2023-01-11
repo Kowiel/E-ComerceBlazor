@@ -29,7 +29,8 @@ namespace BlazorEcomerce.Server.Controllers
                     Username = register.Username,
                     Email = register.Email,
                     PhoneNumber = register.PhoneNumber,
-                }, register.Password);
+                    Localisation = register.PostalCode + " " + register.Country + " " + register.City + " " + register.Adres
+                }, register.Password); ;
 
             if (!result.Success)
             {
@@ -86,6 +87,20 @@ namespace BlazorEcomerce.Server.Controllers
             var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier); //Set while craeting the token. Geting the user id/
 
             var response = await _AutenticationService.ChangeEmail(int.Parse(UserID), newemail);
+
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+
+            return Ok(response);
+        }
+        [HttpPost("changelocalisation/", Name = "changelocalisation"), Authorize]
+        public async Task<ActionResult<ServiceResponse<bool>>> ChangeLocalisation([FromBody] string adres)
+        {
+            var UserID = User.FindFirstValue(ClaimTypes.NameIdentifier); //Set while craeting the token. Geting the user id/
+
+            var response = await _AutenticationService.ChangeLocalisation(int.Parse(UserID),adres);
 
             if (!response.Success)
             {

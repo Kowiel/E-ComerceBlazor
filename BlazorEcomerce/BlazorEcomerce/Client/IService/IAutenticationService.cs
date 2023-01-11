@@ -9,8 +9,10 @@ namespace BlazorEcomerce.Client.IService
         Task<ServiceResponse<string>> Login(UserLogin userLogin); 
 
         Task<ServiceResponse<bool>> CHangePassword(ChangePaswordClass paswordClass);
+        Task<ServiceResponse<bool>> ResetPassword(ChangeEmailClass changeEmail);
         Task<ServiceResponse<bool>> ChangeEmail(ChangeEmailClass changeEmail);
         Task<ServiceResponse<bool>> ChangePhoneNumber(ChangePhoneNumberClass changePhone);
+        Task<ServiceResponse<bool>> ChangeLocaliation(UserLocalisation userLocalisation);
         Task<ServiceResponse<User>> FindUser();
     }
 }

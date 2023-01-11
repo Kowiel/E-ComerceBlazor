@@ -12,6 +12,23 @@
 @if(category==null && searchText==null)
 {
     <FeturedProducts/>
+
+    
+    <div class="container">
+    @foreach(var category in _CategoryService.Categories)
+    {
+             <div class="featured-product">
+                                  <div class="center">
+                             <h4>
+                                <a href="@category.URL">
+                                    @category.Name
+                                </a>
+                            </h4>
+                            </div>
+                     </div>
+        
+    }
+    </div>
 }
 else
 {

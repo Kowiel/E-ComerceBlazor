@@ -15,6 +15,7 @@ namespace BlazorEcomerce.Shared.Models
         public byte[] PasswordSalt { get; set; }
         public string PhoneNumber { get; set; } = String.Empty;
         public string Role { get; set; } = "User";
+        public string Localisation { get; set; } =String.Empty;
 
     }
 }

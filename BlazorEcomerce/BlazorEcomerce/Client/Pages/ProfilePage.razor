@@ -2,6 +2,7 @@
 @inject IAutenticationService _IAutenticationService
 @attribute [Authorize]
 
+<PageTitle>Virtual Notice-board</PageTitle>
 <div class="container CenterText">
 <AuthorizeView>
     <h2>Hi! You're logged in as <i>@context.User.Identity.Name</i>.</h2>
@@ -14,6 +15,7 @@
 <h5>Dane Kontaktowe</h5>
 <p>Mail: @Userdata.Email</p>
 <p>Phone Number: @Userdata.PhoneNumber</p>
+<p>Adres: @Userdata.Localisation</p>
 <b>Role: @Userdata.Role [Cant be eddited]</b>
     <br />
     <br />
@@ -58,9 +60,42 @@
         </div>
         <button type="submit" class="btn btn-primary">Apply</button>
     </EditForm>
+
+    <h5> Eddit Addres</h5>
+
+    <EditForm Model="userLocalisation" OnValidSubmit="ChangeAdres">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="mb-3">
+            <label for="postcode">New Post Code</label>
+            <br />
+            <InputText id="postcode" @bind-Value="userLocalisation.PostalCode" class="justify-content-center" />
+            <ValidationMessage For="@(() => userLocalisation.PostalCode)" />
+        </div>
+        <div class="mb-3">
+            <label for="Country">New Country</label>
+            <br />
+            <InputText id="Country" @bind-Value="userLocalisation.Country" class="justify-content-center" />
+            <ValidationMessage For="@(() => userLocalisation.Country)" />
+        </div>
+        <div class="mb-3">
+            <label for="City">New City</label>
+            <br />
+            <InputText id="City" @bind-Value="userLocalisation.City" class="justify-content-center" />
+            <ValidationMessage For="@(() => userLocalisation.City)" />
+        </div>
+        <div class="mb-3">
+            <label for="Adres">New Adres</label>
+            <br />
+            <InputText id="Adres" @bind-Value="userLocalisation.Adres" class="justify-content-center" />
+            <ValidationMessage For="@(() => userLocalisation.Adres)" />
+        </div>
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </EditForm>
     <br />
     <br />
     <hr />
+    <br />
+    <br />
 <h5>Change Password</h5>
 
 <EditForm Model="request" OnValidSubmit="ChangePassword">
@@ -89,6 +124,7 @@
     ChangePaswordClass request = new ChangePaswordClass();
     ChangeEmailClass requestEmail = new ChangeEmailClass();
     ChangePhoneNumberClass requestPhone = new ChangePhoneNumberClass();
+    UserLocalisation userLocalisation = new UserLocalisation();
     User Userdata = new User();
     string message = string.Empty;
 
@@ -106,6 +142,11 @@
     private async Task ChangePhone()
     {
         var result = await _IAutenticationService.ChangePhoneNumber(requestPhone);
+        message = result.ReturnMesage;
+    }
+        private async Task ChangeAdres()
+    {
+        var result = await _IAutenticationService.ChangeLocaliation(userLocalisation);
         message = result.ReturnMesage;
     }
 

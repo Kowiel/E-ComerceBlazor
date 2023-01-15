@@ -47,7 +47,6 @@ namespace BlazorEcomerce.Server.Controllers
             return Ok(result);
         }
 
-
         [HttpDelete("deleteone/{id}",Name = "delete"), Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<ServiceResponse<bool>>> DeleteProduct(int id)
         {

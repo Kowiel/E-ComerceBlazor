@@ -76,20 +76,13 @@ else
         <div class="mb-0">
             <label for="category">Category</label>
         <InputSelect id="category" @bind-Value="product.CategoryId" class="form-control">
-                @foreach (var category in CategoryService.AdminCategories)
+                @foreach (var category in CategoryService.Categories)
                 {
                 <option value="@category.Id">@category.Name</option>
                 }
         </InputSelect>
     </div>
     <hr />
-    @if(@product.User.Role=="Admin")
-        {
-            <div class="form-check">
-                <InputCheckbox id="featured" @bind-Value="product.Featured" class="form-check-input"></InputCheckbox>
-                <label for="featured" class="form-check-label">Featured</label>
-            </div>
-        }
         <div class="form-check">
         <InputCheckbox id="visible" @bind-Value="product.Visible" class="form-check-input"></InputCheckbox>
         <label for="visible" class="form-check-label">Visible</label>
@@ -119,7 +112,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        await CategoryService.GetAllAdminCategories();
+        await CategoryService.GetAllCategories();
     }
 
     protected override async Task OnParametersSetAsync()

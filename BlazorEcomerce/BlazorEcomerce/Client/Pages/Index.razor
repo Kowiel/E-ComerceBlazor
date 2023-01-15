@@ -17,16 +17,11 @@
     <div class="container">
     @foreach(var category in _CategoryService.Categories)
     {
-             <div class="featured-product">
-                                  <div class="center">
-                             <h4>
-                                <a href="@category.URL">
-                                    @category.Name
-                                </a>
-                            </h4>
-                            </div>
-                     </div>
-        
+        <div style="border:solid; border-color:purple;border-width:3px; margin:10px; padding:2rem;" class="row align-items-start">
+            <div class="col">
+          <a href="@category.URL">@category.Name</a>
+            </div>
+         </div>
     }
     </div>
 }

@@ -230,7 +230,8 @@ namespace BlazorEcomerce.Server.Services
                 float pageResult = PageResults;
                 string Text = SearchText.ToLower();
                 double pageCount = Math.Ceiling((await FindProductsByText(Text, Category)).Count / pageResult);
-                var Products = await _context.Products.Where(x => x.Description.ToLower().Contains(Text) && x.Visible && !x.Deleted || x.Title.ToLower().Contains(Text) && x.Visible && !x.Deleted)
+                var Products = await _context.Products.Where(x => x.Description.ToLower()
+                .Contains(Text) && x.Visible && !x.Deleted || x.Title.ToLower().Contains(Text) && x.Visible && !x.Deleted)
                                  .Skip((PageNumber - 1) * (int)pageResult)
                                  .Take((int)pageResult)
                                  .Include(z => z.User)
@@ -254,7 +255,8 @@ namespace BlazorEcomerce.Server.Services
                 float pageResult = PageResults;
                 string Text = SearchText.ToLower();
                 double pageCount = Math.Ceiling((await FindProductsByText(Text,Category)).Count / pageResult);
-                var Products = await _context.Products.Where(x => x.Description.ToLower().Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted || x.Title.ToLower().Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted)
+                var Products = await _context.Products.Where(x => x.Description.ToLower()
+                .Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted || x.Title.ToLower().Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted)
                                  .Skip((PageNumber - 1) * (int)pageResult)
                                  .Take((int)pageResult)
                                  .Include(z => z.User)
@@ -311,23 +313,22 @@ namespace BlazorEcomerce.Server.Services
 
         }
 
-      
-
-
-        //Methods not found un IServices
-
         private async Task<List<Product>> FindProductsByText(string Text , string Category)
         {
             if(Category=="All")
             {
-                return await _context.Products.Where(x => x.Description.ToLower().Contains(Text) && x.Visible && !x.Deleted || x.Title.ToLower().Contains(Text) && x.Visible && !x.Deleted && x.Visible && !x.Deleted)
+                return await _context.Products.Where(x => x.Description.ToLower()
+                .Contains(Text) && x.Visible && !x.Deleted || x.Title.ToLower()
+                .Contains(Text) && x.Visible && !x.Deleted && x.Visible && !x.Deleted)
                            .Include(z => z.category)
                            .Include(z => z.User)
                            .ToListAsync();
             }
             else
             {
-                return await _context.Products.Where(x => x.Description.ToLower().Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted || x.Title.ToLower().Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted && x.Visible && !x.Deleted)
+                return await _context.Products.Where(x => x.Description.ToLower()
+                .Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted || x.Title.ToLower()
+                .Contains(Text) && x.category.Name == Category && x.Visible && !x.Deleted && x.Visible && !x.Deleted)
                            .Include(z => z.category)
                            .Include(z => z.User)
                            .ToListAsync();

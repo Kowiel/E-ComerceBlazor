@@ -47,13 +47,6 @@ namespace BlazorEcomerce.Client
             return state;
         }
 
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="jwt"></param>
-        /// <returns></returns>
         private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
         {
             var payload = jwt.Split('.')[1];
@@ -66,11 +59,6 @@ namespace BlazorEcomerce.Client
             return claims;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="base64"></param>
-        /// <returns></returns>
         private byte[] ParseBase64WithoutPadding(string base64)
         {
             switch (base64.Length % 4)

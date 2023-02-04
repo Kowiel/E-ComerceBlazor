@@ -135,8 +135,6 @@ namespace BlazorEcomerce.Server.Services
 
             return new ServiceResponse<bool> { Value = true, Success = true, ReturnMesage = "Password has been changed." };
         }
-
-        // Not in the Interface
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -227,15 +225,15 @@ namespace BlazorEcomerce.Server.Services
             }
 
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("michal.patryk.urban@gmail.com"));
+            email.From.Add(MailboxAddress.Parse("kowielplay@gmail.com"));
             email.To.Add(MailboxAddress.Parse($"{user.Email}"));
             email.Subject = $"Password Reset For {user.Username}";
             string password = GenerateRandomPassword(15);
             email.Body = new TextPart(TextFormat.Html) { Text = $"Your Reset Pasword is {password}" };
 
             using var smtp = new SmtpClient();
-            smtp.Connect("smtp-relay.sendinblue.com", 587, SecureSocketOptions.StartTls);
-            smtp.Authenticate("michal.patryk.urban@gmail.com", "hVCQS7qTLJDPtd4M");
+            smtp.Connect("smtp-relay.sendinblue.com", 587,SecureSocketOptions.StartTls);
+            smtp.Authenticate("kowielplay@gmail.com", "KXHkpCqzhjaF1xJD");
             smtp.Send(email);
             smtp.Disconnect(true);
 

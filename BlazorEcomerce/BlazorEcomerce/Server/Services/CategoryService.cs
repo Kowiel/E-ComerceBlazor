@@ -49,7 +49,6 @@ namespace BlazorEcomerce.Server.Services
                 Value = response
             };
         }
-
         public async Task<ServiceResponse<List<Category>>> GetAllCategorysAsync()
         {
             var response = await _data.Categorys.Where(c=>!c.Deleted && c.Visible).ToListAsync();
@@ -58,7 +57,6 @@ namespace BlazorEcomerce.Server.Services
                 Value = response,
             };
         }
-
         public async Task<ServiceResponse<List<Category>>> UpdateCategory(Category category)
         {
             var dbCategory = await GetCategoryById(category.Id);
@@ -79,10 +77,6 @@ namespace BlazorEcomerce.Server.Services
 
             return await GetAllAdminCategories();
         }
-
-
-        // Aditional
-
         private async Task<Category> GetCategoryById(int id)
         {
             return await _data.Categorys.FirstOrDefaultAsync(c => c.Id == id);

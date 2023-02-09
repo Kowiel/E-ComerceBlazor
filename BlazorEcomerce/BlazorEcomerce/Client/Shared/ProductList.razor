@@ -40,8 +40,9 @@ else
         </div>
         <hr/>
     }
-
-        @for (var i = 1; i <= _ProductService.PageCount; i++)
+    @if(_ProductService.ActiveCategorySerch==false)
+        {
+             @for (var i = 1; i <= _ProductService.PageCount; i++)
     {
         <a class="btn
                  @(i == _ProductService.CurentPageClient ? "btn-info" : "btn-outline-info")
@@ -61,6 +62,26 @@ else
 
             }
         </div>
+        }
+        @if (_ProductService.ActiveCategorySerch)
+        {
+            @for (var i = 1; i <= _ProductService.PageCount; i++)
+            {
+                    <a class="btn
+                 @(i == _ProductService.CurentPageClient ? "btn-info" : "btn-outline-info")
+                 page-selection"
+        href="/@_ProductService.CurentCategory/@CoutonPage/@i">@i</a>
+            }
+                <div>
+                    @for (int i = 1; i < 10;)
+                    {
+                        var buttonNumber = i;
+                                    <a class="btn" href="/@_ProductService.CurentCategory/@CoutonPage/1" 
+        @onclick="()=>ChangeCoutOnPage(buttonNumber)">@buttonNumber</a>
+                        i = i + 2;
+                    }
+                </div>
+        }
 
 </div>
 }

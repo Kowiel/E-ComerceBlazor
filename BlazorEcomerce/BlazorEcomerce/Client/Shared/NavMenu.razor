@@ -1,4 +1,5 @@
 ﻿@inject ICategoryService _CategoryService
+@inject NavigationManager NavigationManager
 @implements IDisposable
 
 
@@ -20,7 +21,7 @@
         @foreach(var category in _CategoryService.Categories)
         {
              <div class="nav-item px-2">
-            <NavLink class="nav-link" href="@category.URL">
+                <NavLink class="nav-link" href="@($"/{category.URL}/3/1")">
                @category.Name
             </NavLink>
         </div>
@@ -47,4 +48,5 @@
     {
         _CategoryService.CategorysLoaded -= StateHasChanged;
     }
+
 }

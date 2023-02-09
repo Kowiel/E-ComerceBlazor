@@ -81,10 +81,10 @@ namespace BlazorEcomerce.Server.Controllers
             var response = await _productservice.GetProductByID(id);
             return Ok(response);
         }
-        [HttpGet("getbycategory/{categoryURL}", Name = "GetProductsByCategory")]
-        public async Task<ActionResult<ServiceResponse<Product>>> GetProductByCategory(string categoryURL)
+        [HttpGet("getbycategory/{categoryURL}/{CountOnPage}/{page}", Name = "GetProductsByCategory")]
+        public async Task<ActionResult<ServiceResponse<Product>>> GetProductByCategory(string categoryURL, int page = 1, int CountOnPage = 3)
         {
-            var response = await _productservice.GetProductByCategory(categoryURL);
+            var response = await _productservice.GetProductByCategory(categoryURL,page,CountOnPage);
             return Ok(response);
         }
 

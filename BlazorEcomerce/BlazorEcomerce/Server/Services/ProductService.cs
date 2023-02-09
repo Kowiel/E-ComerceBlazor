@@ -6,6 +6,7 @@ using BlazorEcomerce.Shared.Models;
 using BlazorEcomerce.Shared.Services;
 using BlazroEcomerce.Shared.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Xml.Linq;
 
@@ -176,17 +177,38 @@ namespace BlazorEcomerce.Server.Services
             return response;
         }
 
-        public async Task<ServiceResponse<List<Product>>> GetProductByCategory(string CategoryUrl)
+        public async Task<ServiceResponse<ProductSearchResultDTO>> GetProductByCategory(string CategoryUrl, int PageNumber, int PageResults)
         {
-            var response = new ServiceResponse<List<Product>>()
+            float pageresults=PageResults;
+            double pageCount = Math.Ceiling((await GetProductsAsyncByCategoryURL(CategoryUrl)).Count / pageresults);
+
+            var Products = await _context.Products.
+            Where(x => x.category.URL.ToLower().Equals(CategoryUrl) && x.Visible && !x.Deleted)
+            .Skip((PageNumber - 1) * (int)pageresults)
+            .Take((int)pageresults)
+            .Include(z => z.User)
+            .Include(p => p.Images)
+            .ToListAsync();
+
+            var response = new ServiceResponse<ProductSearchResultDTO>
             {
-                Value = await _context.Products.
-                Where(x => x.category.URL.ToLower().Equals(CategoryUrl) && x.Visible && !x.Deleted)
-                .Include(z => z.User)
-                .Include(p => p.Images)
-                .ToListAsync()
+                Value = new ProductSearchResultDTO
+                {
+                    Products = Products,
+                    CurentPage = PageNumber,
+                    Pages = (int)pageCount
+                }
             };
             return response;
+        }
+
+        private async Task<List<Product>> GetProductsAsyncByCategoryURL(string CategoryUrl)
+        {
+            var Value = await _context.Products.
+             Where(x => x.category.URL.ToLower().Equals(CategoryUrl) && x.Visible && !x.Deleted)
+             .ToListAsync();
+
+            return Value;
         }
 
         public async Task<ServiceResponse<Product>> GetProductByID(int Id)
@@ -335,6 +357,8 @@ namespace BlazorEcomerce.Server.Services
             }
            
         }
+
+        
 
         public async Task<ServiceResponse<List<Product>>> GetAllUserProducts(int WhoId)
         {

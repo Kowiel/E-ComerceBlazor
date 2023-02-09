@@ -3,7 +3,7 @@
 
 @page "/"
 @page "/search/{searchText}/{category}/{productsonpage:int}/{page:int}"
-@page "/{category}"
+@page "/{category}/{productsonpage:int}/{page:int}"
 
 
 
@@ -59,7 +59,7 @@ else
         }
         else
         {
-             await _ProductService.GetAllProducts(category);
+             await _ProductService.GetAllProducts(category,page,productsonpage);
         }
     }
 

@@ -21,6 +21,7 @@ namespace BlazorEcomerce.Client.Service
         public int CurentPageClient { get; set; } = 1;
         public int PageCount { get; set; } = 0;
         public string LastSearchText { get; set;}=String.Empty;
+        public bool ActiveCategorySerch { get; set; }
         public List<Product> AdminProducts { get; set; }
 
         public event Action ProductChanged;
@@ -55,22 +56,36 @@ namespace BlazorEcomerce.Client.Service
                 message = "No products found.";
         }
 
-        public async Task GetAllProducts(string Category )
+        public async Task GetAllProducts(string Category, int page, int CountOnPage)
         {
+            var result2 = new ServiceResponse<List<Product>>();
+            var result = new ServiceResponse<ProductSearchResultDTO>();
             LastSearchText = String.Empty;
             if (Category != null)
                 CurentCategory = Category;
-            var result = Category==null ?
-                await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/products/getallfeatured"):
-                await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/products/getbycategory/{Category}");
+           if(Category== null) 
+               result2 = await _http.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/products/getallfeatured");
+           else
+            result = await _http.GetFromJsonAsync<ServiceResponse<ProductSearchResultDTO>>($"api/products/getbycategory/{Category}/{CountOnPage}/{page}");
+
+              
             if (result != null && result.Value != null)
-                Products = result.Value;
-            CurentPageClient = 1;
-            PageCount = 0;
+            {
+                Products = result.Value.Products;
+                CurentPageClient = result.Value.CurentPage;
+                PageCount = result.Value.Pages;
+            }
+
+            if (result2 != null && result2.Value != null)
+            {
+                Products = result2.Value;
+                CurentPageClient = 1;
+                PageCount = 0;
+            }
 
             if (Products.Count == 0)
                 message = "No products";
-
+            ActiveCategorySerch = true;
             ProductChanged?.Invoke();
         }
 
@@ -88,6 +103,7 @@ namespace BlazorEcomerce.Client.Service
 
         public async Task SerchProducts(string serchtext,string Category, int CountOnPage, int page) 
         {
+            ActiveCategorySerch= false;
             LastSearchText = serchtext;
             CurentCategory = Category;
             var result = await _http.GetFromJsonAsync<ServiceResponse<ProductSearchResultDTO>>($"api/products/getbyserchtext/{serchtext}/{Category}/{CountOnPage}/{page}");
